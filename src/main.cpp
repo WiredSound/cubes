@@ -6,6 +6,7 @@
 
 #include "init.hpp"
 #include "window.hpp"
+#include "shader.hpp"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
@@ -14,15 +15,34 @@ int main() {
 
     try {
         init_glfw();
+
         window.create(800, 600, "OpenGL Template C++");
+        glfwSetFramebufferSizeCallback(*window, framebuffer_size_callback);
+
         init_gl();
     }
-    catch(std::runtime_error& err) {
-        std::cerr << err.what() << std::endl;
+    catch(std::exception& err) {
+        std::cerr << "Initialisation failed - " << err.what() << std::endl;
         return -1;
     }
 
-    glfwSetFramebufferSizeCallback(*window, framebuffer_size_callback);
+    ShaderProgram program;
+
+    try {
+        Shader vert("test.vert", ShaderType::Vertex);
+        Shader frag("test.frag", ShaderType::Fragment);
+
+        program.attach(vert);
+        program.attach(frag);
+
+        program.link();
+    }
+    catch(std::exception& err) {
+        std::cerr << "Shader program construction failed - " << err.what() << std::endl;
+        return -1;
+    }
+
+    program.use();
 
     while(!glfwWindowShouldClose(*window)) {
         if(glfwGetKey(*window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {

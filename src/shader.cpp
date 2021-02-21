@@ -36,3 +36,41 @@ Shader::Shader(const std::string& path, ShaderType type) {
         throw std::runtime_error(msg);
     }
 }
+
+Shader::~Shader() {
+    glDeleteShader(id);
+}
+
+unsigned int Shader::operator*() const {
+    return id;
+}
+
+ShaderProgram::ShaderProgram() {
+    id = glCreateProgram();
+}
+
+ShaderProgram::~ShaderProgram() {
+    glDeleteProgram(id);
+}
+
+void ShaderProgram::attach(const Shader& shader) {
+    glAttachShader(id, *shader);
+}
+
+void ShaderProgram::link() {
+    glLinkProgram(id);
+
+    int success;
+    glGetProgramiv(id, GL_LINK_STATUS, &success);
+
+    if(!success) {
+        char info[512];
+        glGetProgramInfoLog(id, 512, nullptr, info);
+
+        throw std::runtime_error(std::string("Failed to link shader program due to error: ") + info);
+    }
+}
+
+void ShaderProgram::use() {
+    glUseProgram(id);
+}
