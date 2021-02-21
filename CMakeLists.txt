@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1)
-project(opengltemplate LANGUAGES CXX C)
+project(cubes LANGUAGES CXX C)
 
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
