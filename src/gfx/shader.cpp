@@ -4,8 +4,8 @@
 #include <memory>
 #include <stdexcept>
 #include <sstream>
-#include <iostream>
 
+#include "log.hpp"
 #include "gfx/shader.hpp"
 
 namespace gfx {
@@ -38,12 +38,12 @@ namespace gfx {
             throw std::runtime_error(msg);
         }
 
-        std::cout << "Compiled shader " << id << std::endl;
+        LOG("Compiled shader " << id);
     }
 
     Shader::~Shader() {
         glDeleteShader(id);
-        std::cout << "Deleted shader " << id << std::endl;
+        LOG("Deleted shader " << id);
     }
 
     unsigned int Shader::operator*() const {
@@ -52,16 +52,17 @@ namespace gfx {
 
     ShaderProgram::ShaderProgram() {
         id = glCreateProgram();
-        std::cout << "Created shader program " << id << std::endl;
+        LOG("Created shader program " << id);
     }
 
     ShaderProgram::~ShaderProgram() {
         glDeleteProgram(id);
-        std::cout << "Deleted shader program " << id << std::endl;
+        LOG("Deleted shader program " << id);
     }
 
     void ShaderProgram::attach(const Shader& shader) const {
         glAttachShader(id, *shader);
+        LOG("Attached shader " << *shader << " to shader program " << id);
     }
 
     void ShaderProgram::link() const {
@@ -70,7 +71,10 @@ namespace gfx {
         int success;
         glGetProgramiv(id, GL_LINK_STATUS, &success);
 
-        if(!success) {
+        if(success) {
+            LOG("Linked shader program " << id);
+        }
+        else {
             char info[512];
             glGetProgramInfoLog(id, 512, nullptr, info);
 

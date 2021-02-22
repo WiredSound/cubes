@@ -1,14 +1,14 @@
 #include <glad/glad.h>
 
 #include <stdexcept>
-#include <iostream>
 
 #include "window.hpp"
+#include "log.hpp"
 
 Window::~Window() {
     if(handle != nullptr) {
         glfwDestroyWindow(handle);
-        std::cout << "Window destroyed" << std::endl;
+        LOG("Window " << handle << " destroyed");
     }
 }
 
@@ -27,7 +27,7 @@ void Window::create(int width, int height, const char* title) {
 
     glfwMakeContextCurrent(handle);
 
-    std::cout << "Window created" << std::endl;
+    LOG("Window " << handle << " created");
 }
 
 bool Window::should_stay_open() {

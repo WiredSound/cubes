@@ -1,16 +1,15 @@
-#include <iostream>
-
+#include "log.hpp"
 #include "gfx/vbo.hpp"
 
 namespace gfx {
     VertexBuffer::VertexBuffer(GLenum type, bool dynamic) : type(type), dynamic(dynamic) {
         glGenBuffers(1, &id);
-        std::cout << "Generated VBO " << id << std::endl;
+        LOG("Generated VBO " << id);
     }
 
     VertexBuffer::~VertexBuffer() {
         glDeleteBuffers(1, &id);
-        std::cout << "Deleted VBO " << id << std::endl;
+        LOG("Deleted VBO " << id);
     }
 
     unsigned int VertexBuffer::operator*() const {

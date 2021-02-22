@@ -1,16 +1,15 @@
-#include <iostream>
-
+#include "log.hpp"
 #include "gfx/vao.hpp"
 
 namespace gfx {
     VertexArray::VertexArray() {
         glGenVertexArrays(1, &id);
-        std::cout << "Generated VAO " << id << std::endl;
+        LOG("Generated VAO " << id);
     }
 
     VertexArray::~VertexArray() {
         glDeleteVertexArrays(1, &id);
-        std::cout << "Deleted VAO " << id << std::endl;
+        LOG("Deleted VAO " << id);
     }
 
     void VertexArray::bind() const {

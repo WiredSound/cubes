@@ -1,10 +1,10 @@
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
-#include <iostream>
 #include <stdexcept>
 
 #include "init.hpp"
+#include "log.hpp"
 #include "window.hpp"
 #include "gfx/shader.hpp"
 #include "gfx/vao.hpp"
@@ -22,7 +22,7 @@ int main() {
         init_gl();
     }
     catch(std::exception& err) {
-        std::cerr << "Initialisation failed - " << err.what() << std::endl;
+        LOG_ERROR("Initialisation failed - " << err.what());
         return -1;
     }
 
@@ -38,7 +38,7 @@ int main() {
         program.link();
     }
     catch(std::exception& err) {
-        std::cerr << "Shader program construction failed - " << err.what() << std::endl;
+        LOG_ERROR("Shader program construction failed - " << err.what());
         return -1;
     }
 
@@ -58,6 +58,8 @@ int main() {
 
     bool wireframe = false;
 
+    LOG("Entering main loop");
+
     while(window.should_stay_open()) {
         if(window.is_key_down(GLFW_KEY_ESCAPE)) {
             window.close();
@@ -65,6 +67,8 @@ int main() {
         if(window.was_key_just_pressed(GLFW_KEY_F1)) {
             wireframe = !wireframe;
             glPolygonMode(GL_FRONT_AND_BACK, wireframe ? GL_LINE : GL_FILL);
+
+            LOG((wireframe ? "Enabled" : "Disabled") << " wireframe rendering");
         }
 
         glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
@@ -76,6 +80,8 @@ int main() {
 
         window.draw_and_update();
     }
+
+    LOG("Exited main loop");
 
     return 0;
 }
