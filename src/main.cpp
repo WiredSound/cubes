@@ -7,6 +7,8 @@
 #include "init.hpp"
 #include "window.hpp"
 #include "shader.hpp"
+#include "vao.hpp"
+#include "vbo.hpp"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
@@ -43,7 +45,19 @@ int main() {
         return -1;
     }
 
-    program.use();
+    VertexBufferObject vbo(GL_ARRAY_BUFFER, false);
+    VertexArrayObject vao;
+
+    {
+        std::vector vertices = {
+            -0.5f, -0.5f, 0.0f,
+             0.5f, -0.5f, 0.0f,
+             0.0f,  0.5f, 0.0f
+        };
+        vbo.data(vertices);
+    }
+
+    vao.attribute(vbo, 0, 3, GL_FLOAT);
 
     while(!glfwWindowShouldClose(*window)) {
         if(glfwGetKey(*window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
@@ -52,6 +66,10 @@ int main() {
 
         glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        program.use();
+        vao.bind();
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         glfwSwapBuffers(*window);
         glfwPollEvents();
