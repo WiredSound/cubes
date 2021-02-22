@@ -7,6 +7,7 @@
 #include "init.hpp"
 #include "window.hpp"
 #include "shader.hpp"
+#include "vao.hpp"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
@@ -41,6 +42,8 @@ int main() {
         std::cerr << "Shader program construction failed - " << err.what() << std::endl;
         return -1;
     }
+
+    VertexArrayObject obj;
 
     program.use();
 
