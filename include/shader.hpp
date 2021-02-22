@@ -19,9 +19,9 @@ public:
     ShaderProgram();
     ~ShaderProgram();
     unsigned int operator*() const;
-    void attach(const Shader& shader);
-    void link();
-    void use();
+    void attach(Shader shader) const;
+    void link() const;
+    void use() const;
 
 private:
     unsigned int id;

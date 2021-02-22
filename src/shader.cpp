@@ -53,11 +53,11 @@ ShaderProgram::~ShaderProgram() {
     glDeleteProgram(id);
 }
 
-void ShaderProgram::attach(const Shader& shader) {
+void ShaderProgram::attach(Shader shader) const {
     glAttachShader(id, *shader);
 }
 
-void ShaderProgram::link() {
+void ShaderProgram::link() const {
     glLinkProgram(id);
 
     int success;
@@ -71,6 +71,6 @@ void ShaderProgram::link() {
     }
 }
 
-void ShaderProgram::use() {
+void ShaderProgram::use() const {
     glUseProgram(id);
 }
