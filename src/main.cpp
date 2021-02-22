@@ -7,15 +7,15 @@
 #include "init.hpp"
 #include "window.hpp"
 #include "shader.hpp"
-#include "vao.hpp"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 int main() {
+    InitGLFW glfw;
     Window window;
 
     try {
-        init_glfw();
+        glfw.init();
 
         window.create(800, 600, "OpenGL Template C++");
         glfwSetFramebufferSizeCallback(*window, framebuffer_size_callback);
@@ -42,8 +42,6 @@ int main() {
         std::cerr << "Shader program construction failed - " << err.what() << std::endl;
         return -1;
     }
-
-    VertexArrayObject obj;
 
     program.use();
 
