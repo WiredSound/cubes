@@ -10,8 +10,6 @@
 #include "gfx/vao.hpp"
 #include "gfx/vbo.hpp"
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-
 int main() {
     InitGLFW glfw;
     Window window;
@@ -20,7 +18,6 @@ int main() {
         glfw.init();
 
         window.create(800, 600, "OpenGL Template C++");
-        glfwSetFramebufferSizeCallback(*window, framebuffer_size_callback);
 
         init_gl();
     }
@@ -59,9 +56,15 @@ int main() {
 
     vao.attribute(vbo, 0, 3, GL_FLOAT);
 
-    while(!glfwWindowShouldClose(*window)) {
-        if(glfwGetKey(*window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-            glfwSetWindowShouldClose(*window, true);
+    bool wireframe = false;
+
+    while(window.should_stay_open()) {
+        if(window.is_key_down(GLFW_KEY_ESCAPE)) {
+            window.close();
+        }
+        if(window.was_key_just_pressed(GLFW_KEY_F1)) {
+            wireframe = !wireframe;
+            glPolygonMode(GL_FRONT_AND_BACK, wireframe ? GL_LINE : GL_FILL);
         }
 
         glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
@@ -71,13 +74,8 @@ int main() {
         vao.bind();
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
-        glfwSwapBuffers(*window);
-        glfwPollEvents();
+        window.draw_and_update();
     }
 
     return 0;
-}
-
-void framebuffer_size_callback([[maybe_unused]] GLFWwindow* window, int width, int height) {
-    glViewport(0, 0, width, height);
 }
