@@ -6,9 +6,9 @@
 
 #include "init.hpp"
 #include "window.hpp"
-#include "shader.hpp"
-#include "vao.hpp"
-#include "vbo.hpp"
+#include "gfx/shader.hpp"
+#include "gfx/vao.hpp"
+#include "gfx/vbo.hpp"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
@@ -29,11 +29,11 @@ int main() {
         return -1;
     }
 
-    ShaderProgram program;
+    gfx::ShaderProgram program;
 
     try {
-        Shader vert("test.vert", ShaderType::Vertex);
-        Shader frag("test.frag", ShaderType::Fragment);
+        gfx::Shader vert("test.vert", gfx::ShaderType::Vertex);
+        gfx::Shader frag("test.frag", gfx::ShaderType::Fragment);
 
         program.attach(vert);
         program.attach(frag);
@@ -45,8 +45,8 @@ int main() {
         return -1;
     }
 
-    VertexBufferObject vbo(GL_ARRAY_BUFFER, false);
-    VertexArrayObject vao;
+    gfx::VertexBuffer vbo(GL_ARRAY_BUFFER, false);
+    gfx::VertexArray vao;
 
     {
         std::vector vertices = {
