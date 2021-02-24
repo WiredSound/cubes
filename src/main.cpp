@@ -18,7 +18,7 @@ int main() {
     try {
         glfw.init();
 
-        window.create(800, 600, "OpenGL Template C++");
+        window.create(800, 600, "OpenGL Template C++", false);
 
         init_gl();
     }

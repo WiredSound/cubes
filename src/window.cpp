@@ -12,7 +12,7 @@ Window::~Window() {
     }
 }
 
-void Window::create(int width, int height, const char* title) {
+void Window::create(int width, int height, const char* title, bool vsync) {
     handle = glfwCreateWindow(width, height, title, nullptr, nullptr);
 
     if(handle == nullptr) {
@@ -26,6 +26,10 @@ void Window::create(int width, int height, const char* title) {
     );
 
     glfwMakeContextCurrent(handle);
+
+    if(!vsync && glfwExtensionSupported("GLX_EXT_swap_control")) {
+        glfwSwapInterval(0);
+    }
 
     LOG("Window " << handle << " created");
 }
