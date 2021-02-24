@@ -1,5 +1,6 @@
 #pragma once
 
+#include "fps.hpp"
 #include "states/state.hpp"
 
 namespace states {
@@ -10,6 +11,6 @@ namespace states {
         void draw() const override;
 
     private:
-        // ...
+        FramesPerSecond fps;
     };
 }
