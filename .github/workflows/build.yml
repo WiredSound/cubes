@@ -20,6 +20,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Fetch submodules
+        run: git submodule update --init --recursive
+
+      - name: Fetch dependencies on Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo apt-get install xorg-dev
+
       - name: Create build directory
         run: cmake -E make_directory ${{github.workspace}}/build
 
