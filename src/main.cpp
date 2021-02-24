@@ -1,14 +1,15 @@
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
+#include <memory>
 #include <stdexcept>
+#include <optional>
 
-#include "init.hpp"
 #include "log.hpp"
+#include "init.hpp"
 #include "window.hpp"
-#include "gfx/shader.hpp"
-#include "gfx/vao.hpp"
-#include "gfx/vbo.hpp"
+#include "states/state.hpp"
+#include "states/game.hpp"
 
 int main() {
     InitGLFW glfw;
@@ -26,62 +27,46 @@ int main() {
         return -1;
     }
 
-    gfx::ShaderProgram program;
+    std::unique_ptr<states::State> current_state = std::make_unique<states::Game>();
+    std::optional<std::unique_ptr<states::State>> possible_state_change;
 
-    try {
-        gfx::Shader vert("test.vert", gfx::ShaderType::Vertex);
-        gfx::Shader frag("test.frag", gfx::ShaderType::Fragment);
+    double loop_start_time = 0.0, delta = 0.0;
 
-        program.attach(vert);
-        program.attach(frag);
-
-        program.link();
-    }
-    catch(std::exception& err) {
-        LOG_ERROR("Shader program construction failed - " << err.what());
-        return -1;
-    }
-
-    gfx::VertexBuffer vbo(GL_ARRAY_BUFFER, false);
-    gfx::VertexArray vao;
-
-    {
-        std::vector vertices = {
-            -0.5f, -0.5f, 0.0f,
-             0.5f, -0.5f, 0.0f,
-             0.0f,  0.5f, 0.0f
-        };
-        vbo.data(vertices);
-    }
-
-    vao.attribute(vbo, 0, 3, GL_FLOAT);
-
-    bool wireframe = false;
-
-    LOG("Entering main loop");
+    LOG("Entering main loop in state '" << current_state->title << "'");
 
     while(window.should_stay_open()) {
+        // Get timestamp at start of loop so that the delta may be calculated:
+        loop_start_time = glfwGetTime();
+
+        // Input & update state:
+
         if(window.is_key_down(GLFW_KEY_ESCAPE)) {
             window.close();
         }
-        if(window.was_key_just_pressed(GLFW_KEY_F1)) {
-            wireframe = !wireframe;
-            glPolygonMode(GL_FRONT_AND_BACK, wireframe ? GL_LINE : GL_FILL);
 
-            LOG((wireframe ? "Enabled" : "Disabled") << " wireframe rendering");
-        }
+        possible_state_change = current_state->update(window, delta);
 
-        glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+        // Rendering:
+
+        glClearColor(current_state->clear_colour.x, current_state->clear_colour.y, current_state->clear_colour.z, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        program.use();
-        vao.bind();
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        current_state->draw();
 
         window.draw_and_update();
+
+        // Handle state transition (if any):
+
+        if(possible_state_change && possible_state_change.value()) {
+            LOG("Transitioning state from '" << current_state->title << "' to '" << possible_state_change.value()->title << "'");
+            current_state = std::move(possible_state_change.value());
+        }
+
+        // Calculate the time taken for the above to execute:
+        delta = glfwGetTime() - loop_start_time;
     }
 
-    LOG("Exited main loop");
+    LOG("Exited main loop in state '" << current_state->title << "'");
 
     return 0;
 }
