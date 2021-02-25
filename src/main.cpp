@@ -49,7 +49,7 @@ int main() {
         // Rendering:
 
         glClearColor(current_state->clear_colour.x, current_state->clear_colour.y, current_state->clear_colour.z, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         current_state->draw();
 

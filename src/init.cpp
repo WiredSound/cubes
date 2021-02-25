@@ -28,5 +28,6 @@ void init_gl() {
     if(!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
         throw std::runtime_error("Failed to initialise GLAD");
     }
+    glEnable(GL_DEPTH_TEST);
     LOG("Initialised OpenGL " << GLVersion.major << "." << GLVersion.minor << " via GLAD");
 }
