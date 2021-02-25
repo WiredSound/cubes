@@ -1,5 +1,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <algorithm>
+
 #include "camera.hpp"
 
 Camera::Camera(float move_speed, float look_speed, float fov, float near, float far) :
@@ -43,6 +45,7 @@ void Camera::move_towards(Direction d, float delta) {
 void Camera::rotate(float xchange, float ychange) {
     yaw += xchange * look_speed;
     pitch += ychange * look_speed;
+    pitch = std::clamp(pitch, -89.0f, 89.0f);
 
     update_vectors();
 }
@@ -56,7 +59,7 @@ void Camera::update_vectors() {
     glm::vec3 new_front(
         glm::cos(yaw_rad) * glm::cos(pitch_rad),
         glm::sin(pitch_rad),
-        glm::sin(yaw_rad)
+        glm::sin(yaw_rad) * glm::cos(pitch_rad)
     );
 
     front = glm::normalize(new_front);
