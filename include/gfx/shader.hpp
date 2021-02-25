@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glm/glm.hpp>
+
 #include <string>
 
 namespace gfx {
@@ -23,6 +25,7 @@ namespace gfx {
         void attach(const Shader& shader) const;
         void link() const;
         void use() const;
+        void set_uniform(const std::string& key, const glm::mat4& value) const;
 
     private:
         unsigned int id;

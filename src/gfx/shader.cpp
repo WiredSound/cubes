@@ -85,4 +85,9 @@ namespace gfx {
     void ShaderProgram::use() const {
         glUseProgram(id);
     }
+
+    void ShaderProgram::set_uniform(const std::string& key, const glm::mat4& value) const {
+        //use();
+        glUniformMatrix4fv(glGetUniformLocation(id, key.c_str()), 1, false, &value[0][0]);
+    }
 }
