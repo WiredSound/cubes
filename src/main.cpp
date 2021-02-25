@@ -6,21 +6,19 @@
 #include <optional>
 
 #include "log.hpp"
-#include "init.hpp"
-#include "window.hpp"
+#include "util/init.hpp"
+#include "gfx/window.hpp"
 #include "states/state.hpp"
 #include "states/game.hpp"
 
 int main() {
-    InitGLFW glfw;
-    Window window;
+    util::InitGLFW glfw;
+    gfx::Window window;
 
     try {
         glfw.init();
-
         window.create(800, 600, "OpenGL Template C++", false);
-
-        init_gl();
+        util::init_gl();
     }
     catch(std::exception& err) {
         LOG_ERROR("Initialisation failed - " << err.what());

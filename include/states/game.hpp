@@ -1,7 +1,7 @@
 #pragma once
 
-#include "fps.hpp"
-#include "camera.hpp"
+#include "util/fps.hpp"
+#include "util/camera.hpp"
 #include "states/state.hpp"
 #include "gfx/shader.hpp"
 #include "gfx/vbo.hpp"
@@ -10,16 +10,16 @@
 namespace states {
     class Game : public State {
     public:
-        Game(Window& window);
-        std::optional<std::unique_ptr<State>> update(Window& window, double delta) override;
+        Game(gfx::Window& window);
+        std::optional<std::unique_ptr<State>> update(gfx::Window& window, double delta) override;
         void draw() const override;
 
     private:
-        Camera camera;
+        util::Camera camera;
         gfx::ShaderProgram program;
         gfx::VertexBuffer vbo;
         gfx::VertexArray vao;
-        FramesPerSecond fps;
+        util::FramesPerSecond fps;
         bool wireframe = false;
     };
 }
