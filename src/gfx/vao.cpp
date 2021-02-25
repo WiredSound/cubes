@@ -16,7 +16,9 @@ namespace gfx {
         glBindVertexArray(id);
     }
 
-    void VertexArray::attribute(const VertexBuffer& buffer, unsigned int index, int size, GLenum type) const {
+    void VertexArray::attribute(
+        const VertexBuffer& buffer, unsigned int index, int size, GLenum type, std::size_t stride, std::size_t offset
+    ) const {
         bind();
         buffer.bind();
 
@@ -27,17 +29,14 @@ namespace gfx {
         case GL_SHORT: case GL_UNSIGNED_SHORT:
         case GL_INT: case GL_UNSIGNED_INT:
             glVertexAttribIPointer(
-                index, size, type,
-                0, // Tightly pack consecutive vertex attributes.
-                static_cast<void*>(0) // No offset.
+                index, size, type, stride, reinterpret_cast<void*>(offset)
             );
             break;
         default:
             glVertexAttribPointer(
                 index, size, type,
                 false, // Do not normalise values.
-                0, // Tightly pack.
-                static_cast<void*>(0) // No offset.
+                stride, reinterpret_cast<void*>(offset)
             );
             break;
         }

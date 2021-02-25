@@ -24,14 +24,15 @@ namespace states {
         }
 
         std::vector<float> vertices = {
-            0.0f, 0.8f, -2.0f,
-            0.5f, -0.5f, -2.0f,
-            -0.5f, -0.5f, -2.0f
+            0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+            0.0f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+            0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f
         };
 
         vbo.data(vertices);
-        // Position attribute:
-        vao.attribute(vbo, 0, 3, GL_FLOAT);
+        std::size_t stride = 6 * sizeof(float);
+        vao.attribute(vbo, 0, 3, GL_FLOAT, stride); // Position attribute.
+        vao.attribute(vbo, 1, 3, GL_FLOAT, stride, 3 * sizeof(float)); // Colour attribute.
     }
 
     std::optional<std::unique_ptr<State>> Game::update(gfx::Window& window, double delta) {
