@@ -13,8 +13,8 @@ namespace states {
         window.toggle_cursor_lock();
 
         try {
-            gfx::Shader vert("test.vert", gfx::ShaderType::Vertex);
-            gfx::Shader frag("test.frag", gfx::ShaderType::Fragment);
+            gfx::Shader vert("shaders/chunk.vert", gfx::ShaderType::Vertex);
+            gfx::Shader frag("shaders/chunk.frag", gfx::ShaderType::Fragment);
             program.attach(vert);
             program.attach(frag);
             program.link();
