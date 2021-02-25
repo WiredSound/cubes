@@ -27,7 +27,7 @@ int main() {
         return -1;
     }
 
-    std::unique_ptr<states::State> current_state = std::make_unique<states::Game>();
+    std::unique_ptr<states::State> current_state = std::make_unique<states::Game>(window);
     std::optional<std::unique_ptr<states::State>> possible_state_change;
 
     double loop_start_time = 0.0, delta = 0.0;

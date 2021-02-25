@@ -5,6 +5,9 @@
 #include "window.hpp"
 #include "log.hpp"
 
+const double CURSOR_LOCK_X = 400.0;
+const double CURSOR_LOCK_Y = 300.0;
+
 Window::~Window() {
     if(handle != nullptr) {
         glfwDestroyWindow(handle);
@@ -65,4 +68,28 @@ bool Window::was_key_just_pressed(int key) {
     }
 
     return result;
+}
+
+void Window::toggle_cursor_lock() {
+    cursor_locked = !cursor_locked;
+
+    if(cursor_locked) {
+        glfwSetCursorPos(handle, CURSOR_LOCK_X, CURSOR_LOCK_Y);
+        glfwSetInputMode(handle, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+    }
+    else {
+        glfwSetInputMode(handle, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    }
+}
+
+glm::vec2 Window::locked_cursor_movement() {
+    if(cursor_locked) {
+        double x, y;
+        glfwGetCursorPos(handle, &x, &y);
+
+        glfwSetCursorPos(handle, CURSOR_LOCK_X, CURSOR_LOCK_Y);
+
+        return glm::vec2(static_cast<float>(x - CURSOR_LOCK_X), static_cast<float>(y - CURSOR_LOCK_Y));
+    }
+    else return glm::vec2(0.0f, 0.0f);
 }

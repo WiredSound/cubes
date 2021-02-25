@@ -10,7 +10,7 @@
 namespace states {
     class Game : public State {
     public:
-        Game();
+        Game(Window& window);
         std::optional<std::unique_ptr<State>> update(Window& window, double delta) override;
         void draw() const override;
 

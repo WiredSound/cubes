@@ -9,7 +9,9 @@
 #include "states/game.hpp"
 
 namespace states {
-    Game::Game() : State("game", glm::vec3(0.0f, 0.0f, 1.0f)), vbo(GL_ARRAY_BUFFER, false), fps(1.0) {
+    Game::Game(Window& window) : State("game", glm::vec3(0.0f, 0.0f, 1.0f)), vbo(GL_ARRAY_BUFFER, false), fps(1.0) {
+        window.toggle_cursor_lock();
+
         try {
             gfx::Shader vert("test.vert", gfx::ShaderType::Vertex);
             gfx::Shader frag("test.frag", gfx::ShaderType::Fragment);
@@ -43,8 +45,9 @@ namespace states {
         if(window.is_key_down(GLFW_KEY_S)) camera.move_towards(Direction::Backward, deltaf);
         if(window.is_key_down(GLFW_KEY_A)) camera.move_towards(Direction::Left, deltaf);
         if(window.is_key_down(GLFW_KEY_D)) camera.move_towards(Direction::Right, deltaf);
-        if(window.is_key_down(GLFW_KEY_Q)) camera.rotate(-10.0f * deltaf, 0.0f);
-        if(window.is_key_down(GLFW_KEY_E)) camera.rotate(10.0f * deltaf, 0.0f);
+
+        glm::vec2 mouse_movement = window.locked_cursor_movement();
+        camera.rotate(mouse_movement.x * deltaf, -mouse_movement.y * deltaf);
 
         if(fps.update(delta)) {
             LOG("FPS: " << fps.get());
