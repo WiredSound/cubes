@@ -2,7 +2,8 @@
 
 #include "camera.hpp"
 
-Camera::Camera(float fov, float near, float far) :
+Camera::Camera(float move_speed, float look_speed, float fov, float near, float far) :
+    move_speed(move_speed), look_speed(look_speed),
     projection(glm::perspective(glm::radians(fov), 800.0f / 600.0f, near, far)),
     position(0.0f, 0.0f, 0.0f), world_up(0.0f, 1.0f, 0.0f) {
     update_vectors();
@@ -21,7 +22,7 @@ glm::mat4 Camera::get_view_matrix() const {
 }
 
 void Camera::move_towards(Direction d, float delta) {
-    float movement = 2.0f * delta;
+    float movement = move_speed * delta;
 
     switch(d) {
     case Direction::Forward:
@@ -40,8 +41,8 @@ void Camera::move_towards(Direction d, float delta) {
 }
 
 void Camera::rotate(float xchange, float ychange) {
-    yaw += xchange;
-    pitch += ychange;
+    yaw += xchange * look_speed;
+    pitch += ychange * look_speed;
 
     update_vectors();
 }
