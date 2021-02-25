@@ -9,7 +9,7 @@
 #include "states/game.hpp"
 
 namespace states {
-    Game::Game(gfx::Window& window) : State("game", glm::vec3(0.0f, 0.0f, 1.0f)), vbo(GL_ARRAY_BUFFER, false), fps(1.0) {
+    Game::Game(gfx::Window& window) : State("game", glm::vec3(0.46f, 0.74f, 0.85f)), vbo(GL_ARRAY_BUFFER, false), fps(1.0) {
         window.toggle_cursor_lock();
 
         try {
