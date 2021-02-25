@@ -12,5 +12,6 @@ namespace states {
 
     private:
         FramesPerSecond fps;
+        bool wireframe = false;
     };
 }
