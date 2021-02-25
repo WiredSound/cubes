@@ -14,6 +14,8 @@ namespace states {
         State(std::string title, glm::vec3 clear_colour);
 
     public:
+        virtual ~State();
+
         /// Where all game logic is handled for this state. If the returned optional is not empty, then a state
         /// transition will be performed.
         virtual std::optional<std::unique_ptr<State>> update(gfx::Window& window, double delta) = 0;
