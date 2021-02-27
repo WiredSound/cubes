@@ -11,7 +11,7 @@ add_executable(${PROJECT_NAME} ${SRC_FILES})
 target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_DIR})
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
 if(NOT MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic)
 endif()
 
 set(GLFW_DIR "${LIB_DIR}/glfw")
