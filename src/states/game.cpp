@@ -8,12 +8,11 @@ namespace states {
         window.toggle_cursor_lock();
     }
 
-    std::optional<std::unique_ptr<State>> Game::update(gfx::Window& window, double delta) {
-        float deltaf = static_cast<float>(delta);
-        if(window.is_key_down(GLFW_KEY_W)) camera.move_towards(util::Direction::Forward, deltaf);
-        if(window.is_key_down(GLFW_KEY_S)) camera.move_towards(util::Direction::Backward, deltaf);
-        if(window.is_key_down(GLFW_KEY_A)) camera.move_towards(util::Direction::Left, deltaf);
-        if(window.is_key_down(GLFW_KEY_D)) camera.move_towards(util::Direction::Right, deltaf);
+    std::optional<std::unique_ptr<State>> Game::update(gfx::Window& window, float delta) {
+        if(window.is_key_down(GLFW_KEY_W)) camera.move_towards(util::Direction::Forward, delta);
+        if(window.is_key_down(GLFW_KEY_S)) camera.move_towards(util::Direction::Backward, delta);
+        if(window.is_key_down(GLFW_KEY_A)) camera.move_towards(util::Direction::Left, delta);
+        if(window.is_key_down(GLFW_KEY_D)) camera.move_towards(util::Direction::Right, delta);
 
         if(window.was_key_just_pressed(GLFW_KEY_F1)) {
             wireframe = !wireframe;
@@ -21,7 +20,7 @@ namespace states {
         }
 
         glm::vec2 mouse_movement = window.locked_cursor_movement();
-        camera.rotate(mouse_movement.x * deltaf, -mouse_movement.y * deltaf);
+        camera.rotate(mouse_movement.x * deltaf, -mouse_movement.y * delta);
 
         if(fps.update(delta)) {
             LOG("FPS: " << fps.get());

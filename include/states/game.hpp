@@ -10,7 +10,7 @@ namespace states {
     class Game : public State {
     public:
         Game(gfx::Window& window);
-        std::optional<std::unique_ptr<State>> update(gfx::Window& window, double delta) override;
+        std::optional<std::unique_ptr<State>> update(gfx::Window& window, float delta) override;
         void draw() const override;
 
     private:
