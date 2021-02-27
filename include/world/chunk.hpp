@@ -16,7 +16,7 @@ namespace world {
 
     class Chunk {
     public:
-        Chunk();
+        Chunk(Block fill_block = Block::Air);
 
         void set_block(Block b, const glm::vec3& coords);
         Block get_block(const glm::vec3& coords) const;

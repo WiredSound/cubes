@@ -1,7 +1,9 @@
 #include "world/chunk.hpp"
 
 namespace world {
-    Chunk::Chunk() : blocks{ Block::None } {}
+    Chunk::Chunk(Block fill_block) {
+        blocks.fill(fill_block);
+    }
 
     void Chunk::set_block(Block b, const glm::vec3& coords) {
         blocks[coords_to_array_index(coords)] = b;
