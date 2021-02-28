@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "world/block.hpp"
+#include "util/mesh.hpp"
 
 namespace world {
     /// Width, depth, height of a single chunk.
@@ -16,16 +17,16 @@ namespace world {
 
     class Chunk {
     public:
-        Chunk(Block fill_block = Block::Air);
+        Chunk(Block fill_block = Block::None);
 
-        void set_block(Block b, const glm::vec3& coords);
-        Block get_block(const glm::vec3& coords) const;
+        void set_block(Block b, const glm::uvec3& pos);
+        Block get_block(const glm::uvec3& pos) const;
 
-        //Mesh build_simple_mesh() const;
-        //Mesh build_greedy_mesh() const;
+        util::Mesh build_simple_mesh(float face_size) const;
+        //util::Mesh build_greedy_mesh(float face_size) const;
 
     private:
-        std::size_t coords_to_array_index(const glm::vec3& coords) const;
+        std::size_t pos_to_array_index(const glm::uvec3& pos) const;
 
         std::array<Block, CHUNK_SIZE> blocks;
     };

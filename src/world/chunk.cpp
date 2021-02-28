@@ -1,23 +1,28 @@
+#include <algorithm>
+
 #include "world/chunk.hpp"
+#include "world/chunkmesh.hpp"
 
 namespace world {
     Chunk::Chunk(Block fill_block) {
         blocks.fill(fill_block);
     }
 
-    void Chunk::set_block(Block b, const glm::vec3& coords) {
-        blocks[coords_to_array_index(coords)] = b;
+    void Chunk::set_block(Block b, const glm::uvec3& pos) {
+        blocks[pos_to_array_index(pos)] = b;
     }
 
-    Block Chunk::get_block(const glm::vec3& coords) const {
-        return blocks[coords_to_array_index(coords)];
+    Block Chunk::get_block(const glm::uvec3& pos) const {
+        return blocks[pos_to_array_index(pos)];
     }
 
-    //Mesh Chunk::build_simple_mesh() const {}
+    util::Mesh Chunk::build_simple_mesh(float face_size) const {
+        return SimpleChunkMeshBuilder(*this, face_size).build();
+    }
 
-    //Mesh Chunk::build_greedy_mesh() const {}
+    //util::Mesh Chunk::build_greedy_mesh(float face_size) const {}
 
-    std::size_t Chunk::coords_to_array_index(const glm::vec3& coords) const {
-        return (CHUNK_LENGTH * coords.z + coords.y) * CHUNK_LENGTH + coords.x;
+    std::size_t Chunk::pos_to_array_index(const glm::uvec3& pos) const {
+        return std::clamp((CHUNK_LENGTH * pos.z + pos.y) * CHUNK_LENGTH + pos.x, 0u, CHUNK_SIZE - 1);
     }
 }
