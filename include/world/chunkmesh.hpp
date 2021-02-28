@@ -6,6 +6,7 @@
 #include <unordered_map>
 
 #include "util/mesh.hpp"
+#include "util/vertexcolour.hpp"
 #include "world/chunk.hpp"
 
 namespace world {
@@ -28,13 +29,7 @@ namespace world {
         std::vector<float> vertices;
         std::vector<unsigned int> indices;
 
-        struct VertexAndColour {
-            glm::vec3 vertex;
-            glm::vec3 colour;
-        };
-
-        // TODO: Create hashing function for above struct.
-        //std::unordered_map<VertexColour, unsigned int> past_vertex_and_colour_to_index;
+        std::unordered_map<util::VertexColour, unsigned int> past_vertex_colour_to_index;
     };
 
     class SimpleChunkMeshBuilder : public ChunkMeshBuilder {

@@ -16,9 +16,9 @@ namespace world {
     }
 
     unsigned int ChunkMeshBuilder::require_vertex(const glm::vec3& coords, const glm::vec3& colour) {
-        auto search = past_vertex_and_colour_to_index.find(VertexAndColour { coords, colour });
+        auto search = past_vertex_colour_to_index.find(util::VertexColour { coords, colour });
 
-        if(search != past_vertex_and_colour_to_index.end()) { // Return index of existing vertex:
+        if(search != past_vertex_colour_to_index.end()) { // Return index of existing vertex:
             return search->second;
         }
         else { // Create new vertex and then return its index:
