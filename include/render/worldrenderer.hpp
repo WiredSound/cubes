@@ -12,6 +12,6 @@ namespace render {
         void draw() const;
 
     private:
-        ShaderProgram program;
+        gfx::ShaderProgram program;
     };
 }

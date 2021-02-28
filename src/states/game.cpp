@@ -20,7 +20,7 @@ namespace states {
         }
 
         glm::vec2 mouse_movement = window.locked_cursor_movement();
-        camera.rotate(mouse_movement.x * deltaf, -mouse_movement.y * delta);
+        camera.rotate(mouse_movement.x * delta, -mouse_movement.y * delta);
 
         if(fps.update(delta)) {
             LOG("FPS: " << fps.get());

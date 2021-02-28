@@ -2,11 +2,11 @@
 
 namespace render {
     WorldRenderer::WorldRenderer() {
-        Shader vertex("shaders/world.vert");
-        program.attach(vertex, gfx::ShaderType::Vertex);
+        gfx::Shader vertex("shaders/world.vert", gfx::ShaderType::Vertex);
+        program.attach(vertex);
 
-        Shader fragment("shaders/world.frag");
-        program.attach(fragment, gfx::ShaderType::Fragment);
+        gfx::Shader fragment("shaders/world.frag", gfx::ShaderType::Fragment);
+        program.attach(fragment);
 
         program.link();
     }
