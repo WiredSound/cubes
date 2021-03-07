@@ -7,9 +7,21 @@ namespace gfx {
         LOG("Generated VAO " << id);
     }
 
+    VertexArray::VertexArray(VertexArray&& other) : id(other.id) {
+        other.id = 0;
+    }
+
+    VertexArray& VertexArray::operator=(VertexArray&& other) {
+        id = other.id;
+        other.id = 0;
+        return *this;
+    }
+
     VertexArray::~VertexArray() {
-        glDeleteVertexArrays(1, &id);
-        LOG("Deleted VAO " << id);
+        if(id) {
+            glDeleteVertexArrays(1, &id);
+            LOG("Deleted VAO " << id);
+        }
     }
 
     void VertexArray::bind() const {
