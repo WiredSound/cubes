@@ -26,7 +26,7 @@ namespace states {
             LOG("FPS: " << fps.get());
         }
 
-        renderer.update(camera, game_world);
+        renderer.update(camera);
 
         return {}; // Don't want to change state so return empty optional.
     }

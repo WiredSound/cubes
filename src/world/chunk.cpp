@@ -16,7 +16,7 @@ namespace world {
         return blocks[pos_to_array_index(pos)];
     }
 
-    util::Mesh Chunk::build_simple_mesh(float face_size) const {
+    gfx::Mesh Chunk::build_simple_mesh(float face_size) const {
         return SimpleChunkMeshBuilder(*this, face_size).build();
     }
 

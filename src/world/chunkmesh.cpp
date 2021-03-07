@@ -1,5 +1,4 @@
-#include <glm/glm.hpp>
-
+#include <cassert>
 #include <utility>
 
 #include "world/chunkmesh.hpp"
@@ -7,12 +6,44 @@
 namespace world {
     ChunkMeshBuilder::ChunkMeshBuilder(float face_size) : face_size(face_size) {}
 
-    util::Mesh ChunkMeshBuilder::build() {
-        return util::Mesh { std::move(vertices), std::move(indices) };
+    gfx::Mesh ChunkMeshBuilder::build() {
+        return gfx::Mesh(vertices, indices, vertex_count);
     }
 
-    void ChunkMeshBuilder::build_face(const glm::uvec3& from_position, const glm::uvec3& to_position, const glm::vec3& colour) {
-        // ...
+    void ChunkMeshBuilder::build_face(glm::uvec3 bottom_left_pos, glm::uvec3 top_right_pos, const glm::vec3& colour) {
+        // TODO: Only run these assertions if debug or test build.
+        assert(top_right_pos.x >= bottom_left_pos.x);
+        assert(top_right_pos.y >= bottom_left_pos.y);
+        assert(top_right_pos.z >= bottom_left_pos.z);
+
+        auto bottom_left_coords = static_cast<glm::vec3>(bottom_left_pos) * face_size;
+        auto top_right_coords = static_cast<glm::vec3>(top_right_pos) * face_size;
+
+        glm::vec3 bottom_right_coords, top_left_coords;
+
+        if(bottom_left_pos.z == top_right_pos.z) { // front or rear face
+            bottom_right_coords = bottom_left_coords + glm::vec3(face_size, 0.0f, 0.0f);
+            top_left_coords = top_right_coords - glm::vec3(face_size, 0.0f, 0.0f);
+        }
+        else if(bottom_left_pos.y == top_right_pos.y) { // top or bottom face
+            bottom_right_coords = bottom_left_coords + glm::vec3(face_size, 0.0f, 0.0f);
+            top_left_coords = top_right_coords - glm::vec3(face_size, 0.0f, 0.0f);
+        }
+        else if(bottom_left_pos.x == top_right_pos.x) { // left or right face
+            bottom_right_coords = bottom_left_coords + glm::vec3(0.0f, 0.0f, face_size);
+            top_left_coords = top_right_coords - glm::vec3(0.0f, 0.0f, face_size);
+        }
+
+        unsigned int bottom_left = require_vertex(bottom_left_coords, colour),
+                     bottom_right = require_vertex(bottom_right_coords, colour),
+                     top_left = require_vertex(top_left_coords, colour),
+                     top_right = require_vertex(top_right_coords, colour);
+
+        unsigned int new_indices[] = {
+            top_right, bottom_right, top_left,
+            bottom_right, bottom_left, top_left
+        };
+        indices.insert(indices.end(), new_indices, new_indices + 6);
     }
 
     unsigned int ChunkMeshBuilder::require_vertex(const glm::vec3& coords, const glm::vec3& colour) {
@@ -47,25 +78,28 @@ namespace world {
     }
 
     void SimpleChunkMeshBuilder::try_build_faces_around(const glm::uvec3& pos, const Chunk& chunk) {
-        /*if(chunk.get_block(x, y, z) != Block::None) {
+        // TODO: Block colour.
+        glm::vec3 col(0.2f, 1.0f, 0.2f);
+
+        if(chunk.get_block(pos) != Block::None) {
             // Left face:
-            if(x > 0 && chunk.get_block(x - 1, y, z) == Block::None)
-                build_block_face(x, y, z, x, y + 1, z + 1);
+            if(pos.x > 0 && chunk.get_block(pos - glm::uvec3(1, 0, 0)) == Block::None)
+                build_face(pos, pos + glm::uvec3(0, 1, 1), col);
             // Right face:
-            if(x < CHUNK_LENGTH - 1 && chunk.get_block(x + 1, y, z) == Block::None)
-                build_block_face(x + 1, z, y, x + 1, y + 1, z + 1);
+            if(pos.x < CHUNK_LENGTH - 1 && chunk.get_block(pos + glm::uvec3(1, 0, 0)) == Block::None)
+                build_face(pos + glm::uvec3(1, 0, 0), pos + 1u, col);
             // Bottom face:
-            if(y > 0 && chunk.get_block(x, y - 1, z) == Block::None)
-                build_block_face(x, y, z, x + 1, y, z + 1);
+            if(pos.y > 0 && chunk.get_block(pos - glm::uvec3(0, 1, 0)) == Block::None)
+                build_face(pos, pos + glm::uvec3(1, 0, 0), col);
             // Top face:
-            if(y < CHUNK_LENGTH - 1 && chunk.get_block(x, y + 1, z) == Block::None)
-                build_block_face(x, y + 1, z, x + 1, y + 1, z + 1);
+            if(pos.y < CHUNK_LENGTH - 1 && chunk.get_block(pos + glm::uvec3(0, 1, 0)) == Block::None)
+                build_face(pos + glm::uvec3(0, 1, 0), pos + 1u, col);
             // Front face:
-            if(z > 0 && chunk.get_block(x, y, z - 1) == Block::None)
-                build_block_face(x, y, z, x + 1, y + 1, z);
+            if(pos.z > 0 && chunk.get_block(pos - glm::uvec3(0, 0, 1)) == Block::None)
+                build_face(pos, pos + glm::uvec3(1, 1, 0), col);
             // Rear face:
-            if(z < CHUNK_LENGTH - 1 && chunk.get_block(x, y, z + 1) == Block::None)
-                build_block_face(x, y, z + 1, x + 1, y + 1, z + 1);
-        }*/
+            if(pos.z < CHUNK_LENGTH - 1 && chunk.get_block(pos + glm::uvec3(0, 0, 1)) == Block::None)
+                build_face(pos + glm::uvec3(0, 0, 1), pos + 1u, col);
+        }
     }
 }

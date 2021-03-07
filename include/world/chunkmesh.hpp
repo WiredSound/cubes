@@ -5,18 +5,18 @@
 #include <vector>
 #include <unordered_map>
 
-#include "util/mesh.hpp"
 #include "util/vertexcolour.hpp"
+#include "gfx/mesh.hpp"
 #include "world/chunk.hpp"
 
 namespace world {
     class ChunkMeshBuilder {
     public:
         ChunkMeshBuilder(float face_size);
-        util::Mesh build();
+        gfx::Mesh build();
 
     protected:
-        void build_face(const glm::uvec3& from_position, const glm::uvec3& to_position, const glm::vec3& colour);
+        void build_face(glm::uvec3 bottom_left_pos, glm::uvec3 top_right_pos, const glm::vec3& colour);
 
     private:
         /// Will either create a new vertex with the specified colour and return its index, or will provide the index

@@ -3,8 +3,8 @@
 #include "render/renderer.hpp"
 
 namespace render {
-    void Renderer::update(const util::Camera& camera, const world::World& game_world) {
-        world_renderer.update(camera, game_world);
+    void Renderer::update(const util::Camera& camera) {
+        world_renderer.update(camera);
     }
 
     void Renderer::draw(bool wireframe) const {

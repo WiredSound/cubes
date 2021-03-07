@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "world/block.hpp"
-#include "util/mesh.hpp"
+#include "gfx/mesh.hpp"
 
 namespace world {
     /// Width, depth, height of a single chunk.
@@ -22,8 +22,8 @@ namespace world {
         void set_block(Block b, const glm::uvec3& pos);
         Block get_block(const glm::uvec3& pos) const;
 
-        util::Mesh build_simple_mesh(float face_size) const;
-        //util::Mesh build_greedy_mesh(float face_size) const;
+        gfx::Mesh build_simple_mesh(float face_size) const;
+        //gfx::Mesh build_greedy_mesh(float face_size) const;
 
     private:
         std::size_t pos_to_array_index(const glm::uvec3& pos) const;
