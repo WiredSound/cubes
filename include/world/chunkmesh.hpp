@@ -30,6 +30,11 @@ namespace world {
         std::vector<unsigned int> indices;
 
         std::unordered_map<util::VertexColour, unsigned int> past_vertex_colour_to_index;
+
+    protected:
+        const glm::vec3 top_face_colour_mod, bottom_face_colour_mod,
+                        left_face_colour_mod, right_face_colour_mod,
+                        front_face_colour_mod, back_face_colour_mod;
     };
 
     class SimpleChunkMeshBuilder : public ChunkMeshBuilder {

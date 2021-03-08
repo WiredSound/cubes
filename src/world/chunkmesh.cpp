@@ -4,7 +4,10 @@
 #include "world/chunkmesh.hpp"
 
 namespace world {
-    ChunkMeshBuilder::ChunkMeshBuilder(float face_size) : face_size(face_size) {}
+    ChunkMeshBuilder::ChunkMeshBuilder(float face_size)
+        : face_size(face_size), top_face_colour_mod(0.025f), bottom_face_colour_mod(-0.05),
+          left_face_colour_mod(-0.025), right_face_colour_mod(0.0f),
+          front_face_colour_mod(0.0f), back_face_colour_mod(-0.025) {}
 
     gfx::Mesh ChunkMeshBuilder::build() {
         return gfx::Mesh(vertices, indices, vertex_count);
@@ -78,28 +81,28 @@ namespace world {
     }
 
     void SimpleChunkMeshBuilder::try_build_faces_around(const glm::uvec3& pos, const Chunk& chunk) {
-        // TODO: Block colour.
-        glm::vec3 col(0.2f, 1.0f, 0.2f);
+        Block block = chunk.get_block(pos);
+        glm::vec3 colour = get_block_colour(block);
 
-        if(chunk.get_block(pos) != Block::None) {
+        if(block != Block::None) {
             // Left face:
             if(pos.x > 0 && chunk.get_block(pos - glm::uvec3(1, 0, 0)) == Block::None)
-                build_face(pos, pos + glm::uvec3(0, 1, 1), col);
+                build_face(pos, pos + glm::uvec3(0, 1, 1), colour + left_face_colour_mod);
             // Right face:
             if(pos.x < CHUNK_LENGTH - 1 && chunk.get_block(pos + glm::uvec3(1, 0, 0)) == Block::None)
-                build_face(pos + glm::uvec3(1, 0, 0), pos + 1u, col);
+                build_face(pos + glm::uvec3(1, 0, 0), pos + 1u, colour + right_face_colour_mod);
             // Bottom face:
             if(pos.y > 0 && chunk.get_block(pos - glm::uvec3(0, 1, 0)) == Block::None)
-                build_face(pos, pos + glm::uvec3(1, 0, 1), col);
+                build_face(pos, pos + glm::uvec3(1, 0, 1), colour + bottom_face_colour_mod);
             // Top face:
             if(pos.y < CHUNK_LENGTH - 1 && chunk.get_block(pos + glm::uvec3(0, 1, 0)) == Block::None)
-                build_face(pos + glm::uvec3(0, 1, 0), pos + 1u, col);
+                build_face(pos + glm::uvec3(0, 1, 0), pos + 1u, colour + top_face_colour_mod);
             // Front face:
             if(pos.z > 0 && chunk.get_block(pos - glm::uvec3(0, 0, 1)) == Block::None)
-                build_face(pos, pos + glm::uvec3(1, 1, 0), col);
+                build_face(pos, pos + glm::uvec3(1, 1, 0), colour + front_face_colour_mod);
             // Rear face:
             if(pos.z < CHUNK_LENGTH - 1 && chunk.get_block(pos + glm::uvec3(0, 0, 1)) == Block::None)
-                build_face(pos + glm::uvec3(0, 0, 1), pos + 1u, col);
+                build_face(pos + glm::uvec3(0, 0, 1), pos + 1u, colour + back_face_colour_mod);
         }
     }
 }
