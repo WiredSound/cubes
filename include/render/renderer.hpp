@@ -9,7 +9,6 @@ namespace render {
         void update(const util::Camera& camera);
         void draw(bool wireframe) const;
 
-    private:
         WorldRenderer world_renderer;
     };
 }

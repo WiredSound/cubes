@@ -1,3 +1,4 @@
+#include "log.hpp"
 #include "render/worldrenderer.hpp"
 
 namespace render {
@@ -31,7 +32,8 @@ namespace render {
         }
     }
         
-    void WorldRenderer::update_chunk_mesh(const glm::ivec3& coords, world::Chunk chunk) {
+    void WorldRenderer::update_chunk_mesh(const glm::ivec3& coords, const world::Chunk& chunk) {
+        LOG("Generating mesh for chunk at " << coords.x << ", " << coords.y << ", " << coords.z);
         if(greedy_meshing) {
             // ...
         }

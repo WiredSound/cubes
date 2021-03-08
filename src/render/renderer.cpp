@@ -8,11 +8,11 @@ namespace render {
     }
 
     void Renderer::draw(bool wireframe) const {
-        if(wireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        if(wireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
         // Draw text...
 
-        if(wireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        if(wireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
         world_renderer.draw();
     }

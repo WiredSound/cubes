@@ -90,7 +90,7 @@ namespace world {
                 build_face(pos + glm::uvec3(1, 0, 0), pos + 1u, col);
             // Bottom face:
             if(pos.y > 0 && chunk.get_block(pos - glm::uvec3(0, 1, 0)) == Block::None)
-                build_face(pos, pos + glm::uvec3(1, 0, 0), col);
+                build_face(pos, pos + glm::uvec3(1, 0, 1), col);
             // Top face:
             if(pos.y < CHUNK_LENGTH - 1 && chunk.get_block(pos + glm::uvec3(0, 1, 0)) == Block::None)
                 build_face(pos + glm::uvec3(0, 1, 0), pos + 1u, col);

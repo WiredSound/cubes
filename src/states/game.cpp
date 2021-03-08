@@ -6,6 +6,11 @@
 namespace states {
     Game::Game(gfx::Window& window) : State("game", glm::vec3(0.46f, 0.74f, 0.85f)), fps(1.0) {
         window.toggle_cursor_lock();
+
+        world::Chunk test_chunk(world::Block::None);
+        test_chunk.set_block(world::Block::Grass, glm::uvec3(5, 5, 5));
+
+        game_world.provide_chunk(glm::ivec3(0, 0, 0), std::move(test_chunk), renderer.world_renderer);
     }
 
     std::optional<std::unique_ptr<State>> Game::update(gfx::Window& window, float delta) {
