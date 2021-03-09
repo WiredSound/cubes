@@ -5,8 +5,11 @@
 #include "util/camera.hpp"
 
 namespace util {
-    Camera::Camera(float move_speed, float look_speed, float fov, float near, float far) :
-        move_speed(move_speed), look_speed(look_speed),
+    Camera::Camera(
+        float forward_backward_speed, float strafe_speed, float vertical_speed, float look_speed, bool lock_y,
+        float fov, float near, float far
+    ) : forward_backward_speed(forward_backward_speed), strafe_speed(strafe_speed), vertical_speed(vertical_speed),
+        look_speed(look_speed), lock_y(lock_y),
         projection(glm::perspective(glm::radians(fov), 800.0f / 600.0f, near, far)),
         position(0.0f, 0.0f, 0.0f), world_up(0.0f, 1.0f, 0.0f) {
         update_vectors();
@@ -25,20 +28,37 @@ namespace util {
     }
 
     void Camera::move_towards(Direction d, float delta) {
-        float movement = move_speed * delta;
+        float forward_backward_movement = forward_backward_speed * delta,
+              strafe_movement = strafe_speed * delta,
+              vertical_movement = vertical_speed * delta;
+
+        float y = position.y;
 
         switch(d) {
         case Direction::Forward:
-            position += front * movement;
+            position += front * forward_backward_movement;
             break;
         case Direction::Backward:
-            position -= front * movement;
+            position -= front * forward_backward_movement;
             break;
         case Direction::Left:
-            position -= right * movement;
+            position -= right * strafe_movement;
             break;
         case Direction::Right:
-            position += right * movement;
+            position += right * strafe_movement;
+            break;
+        default: break;
+        }
+
+        switch(d) {
+        case Direction::Up:
+            position += world_up * vertical_movement;
+            break;
+        case Direction::Down:
+            position -= world_up * vertical_movement;
+            break;
+        default:
+            if(lock_y) position.y = y;
             break;
         }
     }
