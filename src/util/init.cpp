@@ -3,8 +3,8 @@
 
 #include <stdexcept>
 
-#include "log.hpp"
 #include "util/init.hpp"
+#include "util/log.hpp"
 
 namespace util {
     void InitGLFW::init() {

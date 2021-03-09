@@ -1,5 +1,5 @@
-#include "log.hpp"
 #include "render/worldrenderer.hpp"
+#include "util/log.hpp"
 
 namespace render {
     WorldRenderer::WorldRenderer(float face_size, bool greedy_meshing) : face_size(face_size), greedy_meshing(greedy_meshing) {
@@ -33,7 +33,7 @@ namespace render {
     }
         
     void WorldRenderer::update_chunk_mesh(const glm::ivec3& coords, const world::Chunk& chunk) {
-        LOG("Generating mesh for chunk at " << coords.x << ", " << coords.y << ", " << coords.z);
+        LOG("Generating mesh for chunk at " << util::vec3_to_string(coords));
         if(greedy_meshing) {
             // ...
         }

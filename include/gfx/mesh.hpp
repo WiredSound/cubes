@@ -9,7 +9,7 @@
 namespace gfx {
     class Mesh {
     public:
-        Mesh(const std::vector<float>& vertices, const std::vector<unsigned int>& indices, int vertex_count);
+        Mesh(const std::vector<float>& vertices, const std::vector<unsigned int>& indices, unsigned int vertex_count);
         void bind_and_draw() const;
 
     private:
@@ -17,5 +17,6 @@ namespace gfx {
         VertexBuffer vertices_vbo;
         VertexBuffer indices_vbo;
         const unsigned int vertex_count;
+        const unsigned int indices_count;
     };
 }

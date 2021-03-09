@@ -1,5 +1,5 @@
-#include "log.hpp"
 #include "gfx/vao.hpp"
+#include "util/log.hpp"
 
 namespace gfx {
     VertexArray::VertexArray() {

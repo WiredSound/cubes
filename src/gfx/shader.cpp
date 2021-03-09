@@ -5,8 +5,8 @@
 #include <stdexcept>
 #include <sstream>
 
-#include "log.hpp"
 #include "gfx/shader.hpp"
+#include "util/log.hpp"
 
 namespace gfx {
     Shader::Shader(const std::string& path, ShaderType type) {

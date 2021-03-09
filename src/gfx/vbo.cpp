@@ -1,5 +1,5 @@
-#include "log.hpp"
 #include "gfx/vbo.hpp"
+#include "util/log.hpp"
 
 namespace gfx {
     VertexBuffer::VertexBuffer(GLenum type, bool dynamic) : type(type), dynamic(dynamic) {

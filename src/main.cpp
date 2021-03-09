@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <optional>
 
-#include "log.hpp"
+#include "util/log.hpp"
 #include "util/init.hpp"
 #include "gfx/window.hpp"
 #include "states/state.hpp"

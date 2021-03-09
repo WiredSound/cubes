@@ -2,6 +2,7 @@
 #include <utility>
 
 #include "world/chunkmesh.hpp"
+#include "util/log.hpp"
 
 namespace world {
     ChunkMeshBuilder::ChunkMeshBuilder(float face_size)
@@ -53,7 +54,11 @@ namespace world {
         auto search = past_vertex_colour_to_index.find(util::VertexColour { coords, colour });
 
         if(search != past_vertex_colour_to_index.end()) { // Return index of existing vertex:
-            return search->second;
+            auto existing_index = search->second;
+
+            LOG_TRACE("Required vertex " << util::vec3_to_string(coords) << " found to already exist at index " << existing_index);
+
+            return existing_index;
         }
         else { // Create new vertex and then return its index:
             float new_vertices[] = {
@@ -61,6 +66,8 @@ namespace world {
                 colour.x, colour.y, colour.z
             };
             vertices.insert(vertices.end(), new_vertices, new_vertices + 6);
+
+            LOG_TRACE("Created new vertex " << util::vec3_to_string(coords) << " at index " << vertex_count);
 
             vertex_count++;
 
