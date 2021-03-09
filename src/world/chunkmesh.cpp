@@ -51,27 +51,36 @@ namespace world {
     }
 
     unsigned int ChunkMeshBuilder::require_vertex(const glm::vec3& coords, const glm::vec3& colour) {
-        auto search = past_vertex_colour_to_index.find(util::VertexColour { coords, colour });
+        util::VertexColour vertex_colour { coords, colour };
+        auto search = past_vertex_colour_to_index.find(vertex_colour);
 
-        if(search != past_vertex_colour_to_index.end()) { // Return index of existing vertex:
+        if(search != past_vertex_colour_to_index.end()) {
+            // Return index of existing vertex:
+
             auto existing_index = search->second;
 
             LOG_TRACE("Required vertex " << util::vec3_to_string(coords) << " found to already exist at index " << existing_index);
 
             return existing_index;
         }
-        else { // Create new vertex and then return its index:
+        else {
+            // Create and store new vertex:
+
             float new_vertices[] = {
                 coords.x, coords.y, coords.z,
                 colour.x, colour.y, colour.z
             };
             vertices.insert(vertices.end(), new_vertices, new_vertices + 6);
 
-            LOG_TRACE("Created new vertex " << util::vec3_to_string(coords) << " at index " << vertex_count);
-
+            auto index = vertex_count;
             vertex_count++;
 
-            return vertex_count - 1;
+            LOG_TRACE("Created new vertex " << util::vec3_to_string(coords) << " at index " << index);
+
+            // Store in past vertex+colour hash map:
+            past_vertex_colour_to_index.emplace(vertex_colour, index);
+
+            return index;
         }
     }
     
