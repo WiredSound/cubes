@@ -24,6 +24,12 @@ namespace world {
     public:
         Chunk(Block fill_block = Block::None);
 
+        Chunk(Chunk&&) = default;
+        Chunk& operator=(Chunk&&) = default;
+
+        Chunk(const Chunk&) = delete;
+        Chunk& operator=(const Chunk&) = delete;
+
         void set_block(Block b, const glm::uvec3& pos);
         Block get_block(const glm::uvec3& pos) const;
         bool is_no_block_at(const glm::uvec3& pos) const;
