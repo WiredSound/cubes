@@ -8,7 +8,7 @@ namespace states {
         window.toggle_cursor_lock();
 
         world::Chunk test_chunk(world::Block::None);
-        for(auto pos : std::vector<glm::uvec3> { glm::uvec3(2, 2, 2), glm::uvec3(3, 2, 2) })
+        for(auto pos : std::vector<glm::uvec3> { glm::uvec3(0, 0, 0), glm::uvec3(0, 0, 1), glm::uvec3(1, 0, 0) })
             test_chunk.set_block(world::Block::Grass, pos);
 
         game_world.provide_chunk(glm::ivec3(0, 0, 0), std::move(test_chunk), renderer.world_renderer);

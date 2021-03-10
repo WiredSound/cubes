@@ -39,9 +39,19 @@ namespace world {
 
     class SimpleChunkMeshBuilder : public ChunkMeshBuilder {
     public:
-        SimpleChunkMeshBuilder(const Chunk& chunk, float face_size);
+        SimpleChunkMeshBuilder(
+            float face_size, const Chunk& chunk,
+            optional_chunk_ref above_chunk, optional_chunk_ref below_chunk,
+            optional_chunk_ref left_chunk, optional_chunk_ref right_chunk,
+            optional_chunk_ref front_chunk, optional_chunk_ref rear_chunk
+        );
 
     private:
-        void try_build_faces_around(const glm::uvec3& pos, const Chunk& chunk);
+        void try_build_faces_around(
+            const glm::uvec3& pos, const Chunk& chunk,
+            optional_chunk_ref above_chunk, optional_chunk_ref below_chunk,
+            optional_chunk_ref left_chunk, optional_chunk_ref right_chunk,
+            optional_chunk_ref front_chunk, optional_chunk_ref rear_chunk
+        );
     };
 }

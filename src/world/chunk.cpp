@@ -16,8 +16,22 @@ namespace world {
         return blocks[pos_to_array_index(pos)];
     }
 
-    gfx::Mesh Chunk::build_simple_mesh(float face_size) const {
-        return SimpleChunkMeshBuilder(*this, face_size).build();
+    bool Chunk::is_no_block_at(const glm::uvec3& pos) const {
+        return get_block(pos) == Block::None;
+    }
+
+    gfx::Mesh Chunk::build_simple_mesh(
+        float face_size,
+        optional_chunk_ref above_chunk, optional_chunk_ref below_chunk,
+        optional_chunk_ref left_chunk, optional_chunk_ref right_chunk,
+        optional_chunk_ref front_chunk, optional_chunk_ref rear_chunk
+    ) const {
+        return SimpleChunkMeshBuilder(
+            face_size, *this,
+            above_chunk, below_chunk,
+            left_chunk, right_chunk,
+            front_chunk, rear_chunk
+        ).build();
     }
 
     //util::Mesh Chunk::build_greedy_mesh(float face_size) const {}

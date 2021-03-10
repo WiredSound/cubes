@@ -84,41 +84,97 @@ namespace world {
         }
     }
     
-    SimpleChunkMeshBuilder::SimpleChunkMeshBuilder(const Chunk& chunk, float face_size) : ChunkMeshBuilder(face_size) {
+    SimpleChunkMeshBuilder::SimpleChunkMeshBuilder(
+        float face_size, const Chunk& chunk,
+        optional_chunk_ref above_chunk, optional_chunk_ref below_chunk,
+        optional_chunk_ref left_chunk, optional_chunk_ref right_chunk,
+        optional_chunk_ref front_chunk, optional_chunk_ref rear_chunk
+    ) : ChunkMeshBuilder(face_size) {
         glm::uvec3 pos;
 
         for(pos.x = 0; pos.x < CHUNK_LENGTH; pos.x++) {
             for(pos.y = 0; pos.y < CHUNK_LENGTH; pos.y++) {
                 for(pos.z = 0; pos.z < CHUNK_LENGTH; pos.z++) {
-                    try_build_faces_around(pos, chunk);
+                    try_build_faces_around(
+                        pos, chunk,
+                        above_chunk, below_chunk,
+                        left_chunk, right_chunk,
+                        front_chunk, rear_chunk
+                    );
                 }
             }
         }
     }
 
-    void SimpleChunkMeshBuilder::try_build_faces_around(const glm::uvec3& pos, const Chunk& chunk) {
+    void SimpleChunkMeshBuilder::try_build_faces_around(
+        const glm::uvec3& pos, const Chunk& chunk,
+        optional_chunk_ref above_chunk, optional_chunk_ref below_chunk,
+        optional_chunk_ref left_chunk, optional_chunk_ref right_chunk,
+        optional_chunk_ref front_chunk, optional_chunk_ref rear_chunk
+    ) {
         Block block = chunk.get_block(pos);
         glm::vec3 colour = get_block_colour(block);
 
         if(block != Block::None) {
             // Left face:
-            if(pos.x > 0 && chunk.get_block(pos - glm::uvec3(1, 0, 0)) == Block::None)
+
+            bool no_block_left_in_chunk = pos.x > 0 && chunk.is_no_block_at(pos - glm::uvec3(1, 0, 0));
+            bool no_block_in_left_chunk =
+                pos.x == 0 && (!left_chunk || left_chunk->get().is_no_block_at(pos + glm::uvec3(CHUNK_LENGTH - 1, 0, 0)));
+
+            if(no_block_left_in_chunk || no_block_in_left_chunk) {
                 build_face(pos, pos + glm::uvec3(0, 1, 1), colour + left_face_colour_mod);
+            }
+
             // Right face:
-            if(pos.x < CHUNK_LENGTH - 1 && chunk.get_block(pos + glm::uvec3(1, 0, 0)) == Block::None)
+
+            bool no_block_right_in_chunk = pos.x < CHUNK_LENGTH - 1 && chunk.is_no_block_at(pos + glm::uvec3(1, 0, 0));
+            bool no_block_in_right_chunk =
+                pos.x == CHUNK_LENGTH - 1 && (!right_chunk || right_chunk->get().is_no_block_at(pos - glm::uvec3(CHUNK_LENGTH - 1, 0, 0)));
+
+            if(no_block_right_in_chunk || no_block_in_right_chunk) {
                 build_face(pos + glm::uvec3(1, 0, 0), pos + 1u, colour + right_face_colour_mod);
+            }
+
             // Bottom face:
-            if(pos.y > 0 && chunk.get_block(pos - glm::uvec3(0, 1, 0)) == Block::None)
+
+            bool no_block_below_in_chunk = pos.y > 0 && chunk.is_no_block_at(pos - glm::uvec3(0, 1, 0));
+            bool no_block_in_below_chunk =
+                pos.y == 0 && (!below_chunk || below_chunk->get().is_no_block_at(pos + glm::uvec3(0, CHUNK_LENGTH, 0)));
+
+            if(no_block_below_in_chunk || no_block_in_below_chunk) {
                 build_face(pos, pos + glm::uvec3(1, 0, 1), colour + bottom_face_colour_mod);
+            }
+
             // Top face:
-            if(pos.y < CHUNK_LENGTH - 1 && chunk.get_block(pos + glm::uvec3(0, 1, 0)) == Block::None)
+
+            bool no_block_above_in_chunk = pos.y < CHUNK_LENGTH - 1 && chunk.is_no_block_at(pos + glm::uvec3(0, 1, 0));
+            bool no_block_in_above_chunk =
+                pos.y == CHUNK_LENGTH - 1 && (!above_chunk || above_chunk->get().is_no_block_at(pos - glm::uvec3(0, CHUNK_LENGTH - 1, 0)));
+
+            if(no_block_above_in_chunk || no_block_in_above_chunk) {
                 build_face(pos + glm::uvec3(0, 1, 0), pos + 1u, colour + top_face_colour_mod);
+            }
+
             // Front face:
-            if(pos.z > 0 && chunk.get_block(pos - glm::uvec3(0, 0, 1)) == Block::None)
+
+            bool no_block_front_in_chunk = pos.z > 0 && chunk.is_no_block_at(pos - glm::uvec3(0, 0, 1));
+            bool no_block_in_front_chunk =
+                pos.z == 0 && (!front_chunk || front_chunk->get().is_no_block_at(pos + glm::uvec3(0, 0, CHUNK_LENGTH - 1)));
+
+            if(no_block_front_in_chunk || no_block_in_front_chunk) {
                 build_face(pos, pos + glm::uvec3(1, 1, 0), colour + front_face_colour_mod);
+            }
+
             // Rear face:
-            if(pos.z < CHUNK_LENGTH - 1 && chunk.get_block(pos + glm::uvec3(0, 0, 1)) == Block::None)
+
+            bool no_block_rear_in_chunk = pos.z < CHUNK_LENGTH - 1 && chunk.get_block(pos + glm::uvec3(0, 0, 1)) == Block::None;
+            bool no_block_in_rear_chunk =
+                pos.z == CHUNK_LENGTH - 1 && (!rear_chunk || rear_chunk->get().is_no_block_at(pos - glm::uvec3(0, 0, CHUNK_LENGTH - 1)));
+
+            if(no_block_rear_in_chunk || no_block_in_rear_chunk) {
                 build_face(pos + glm::uvec3(0, 0, 1), pos + 1u, colour + back_face_colour_mod);
+            }
         }
     }
 }
