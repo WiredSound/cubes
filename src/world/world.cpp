@@ -7,7 +7,7 @@ namespace world {
         auto search = loaded_chunks.find(coords);
 
         if(search == loaded_chunks.end()) return {};
-        else return std::make_optional(std::ref(search->second));
+        else return std::make_optional(std::cref(search->second));
     }
 
     void World::provide_chunk(glm::ivec3 coords, Chunk chunk, render::WorldRenderer& renderer) {
