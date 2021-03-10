@@ -1,5 +1,5 @@
-#include "log.hpp"
 #include "gfx/vbo.hpp"
+#include "util/log.hpp"
 
 namespace gfx {
     VertexBuffer::VertexBuffer(GLenum type, bool dynamic) : type(type), dynamic(dynamic) {
@@ -7,9 +7,23 @@ namespace gfx {
         LOG("Generated VBO " << id);
     }
 
+    VertexBuffer::VertexBuffer(VertexBuffer&& other) : id(other.id), type(other.type), dynamic(other.dynamic) {
+        other.id = 0;
+    }
+
+    VertexBuffer& VertexBuffer::operator=(VertexBuffer&& other) {
+        id = other.id;
+        type = other.type;
+        dynamic = other.dynamic;
+        other.id = 0;
+        return *this;
+    }
+
     VertexBuffer::~VertexBuffer() {
-        glDeleteBuffers(1, &id);
-        LOG("Deleted VBO " << id);
+        if(id) {
+            glDeleteBuffers(1, &id);
+            LOG("Deleted VBO " << id);
+        }
     }
 
     unsigned int VertexBuffer::operator*() const {

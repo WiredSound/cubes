@@ -9,7 +9,12 @@ namespace gfx {
     /// Wrapper around a `GLFWwindow` object. Automatically calls `glfwDestroyWindow` on destruction.
     class Window {
     public:
+        Window();
         ~Window();
+        
+        Window(const Window&) = delete;
+        Window& operator=(const Window&) = delete;
+
         /// Creates a window with the specified dimensions and title. Will throw `std::runtime_error` should GLFW fail
         /// to create the window.
         void create(int width, int height, const char* title, bool vsync = true);

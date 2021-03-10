@@ -2,13 +2,15 @@
 
 #include <stdexcept>
 
-#include "log.hpp"
 #include "gfx/window.hpp"
+#include "util/log.hpp"
 
 const double CURSOR_LOCK_X = 400.0;
 const double CURSOR_LOCK_Y = 300.0;
 
 namespace gfx {
+    Window::Window() {}
+
     Window::~Window() {
         if(handle != nullptr) {
             glfwDestroyWindow(handle);

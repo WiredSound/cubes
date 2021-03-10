@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <optional>
 
-#include "log.hpp"
+#include "util/log.hpp"
 #include "util/init.hpp"
 #include "gfx/window.hpp"
 #include "states/state.hpp"
@@ -28,13 +28,13 @@ int main() {
     std::unique_ptr<states::State> current_state = std::make_unique<states::Game>(window);
     std::optional<std::unique_ptr<states::State>> possible_state_change;
 
-    double loop_start_time = 0.0, delta = 0.0;
+    float loop_start_time = 0.0, delta = 0.0;
 
     LOG("Entering main loop in state '" << current_state->title << "'");
 
     while(window.should_stay_open()) {
         // Get timestamp at start of loop so that the delta may be calculated:
-        loop_start_time = glfwGetTime();
+        loop_start_time = static_cast<float>(glfwGetTime());
 
         // Input & update state:
 
@@ -61,7 +61,7 @@ int main() {
         }
 
         // Calculate the time taken for the above to execute:
-        delta = glfwGetTime() - loop_start_time;
+        delta = static_cast<float>(glfwGetTime()) - loop_start_time;
     }
 
     LOG("Exited main loop in state '" << current_state->title << "'");

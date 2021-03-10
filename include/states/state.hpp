@@ -18,7 +18,7 @@ namespace states {
 
         /// Where all game logic is handled for this state. If the returned optional is not empty, then a state
         /// transition will be performed.
-        virtual std::optional<std::unique_ptr<State>> update(gfx::Window& window, double delta) = 0;
+        virtual std::optional<std::unique_ptr<State>> update(gfx::Window& window, float delta) = 0;
         /// Handles rendering via OpenGL. Can assume the screen has been cleared before this method is called.
         virtual void draw() const = 0;
 

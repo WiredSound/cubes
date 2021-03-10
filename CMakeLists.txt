@@ -19,7 +19,7 @@ set(TEST_NAME "test${PROJECT_NAME}")
 add_library(${SHARED_NAME} STATIC ${SRC_FILES})
 target_include_directories(${SHARED_NAME} PUBLIC ${INCLUDE_DIR})
 if(NOT MSVC)
-    target_compile_options(${SHARED_NAME} PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(${SHARED_NAME} PRIVATE -Wall -Wextra -Wpedantic)
 endif()
 
 set(GLFW_DIR "${LIB_DIR}/glfw")

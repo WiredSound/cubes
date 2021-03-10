@@ -1,79 +1,47 @@
 #include <GLFW/glfw3.h>
-#include <glad/glad.h>
-#include <glm/glm.hpp>
-#include <glm/gtx/string_cast.hpp>
 
-#include <vector>
-
-#include "log.hpp"
 #include "states/game.hpp"
+#include "util/log.hpp"
 
 namespace states {
-    Game::Game(gfx::Window& window) : State("game", glm::vec3(0.46f, 0.74f, 0.85f)), vbo(GL_ARRAY_BUFFER, false), fps(1.0) {
+    Game::Game(gfx::Window& window) : State("game", glm::vec3(0.46f, 0.74f, 0.85f)), fps(1.0) {
         window.toggle_cursor_lock();
 
-        try {
-            gfx::Shader vert("shaders/chunk.vert", gfx::ShaderType::Vertex);
-            gfx::Shader frag("shaders/chunk.frag", gfx::ShaderType::Fragment);
-            program.attach(vert);
-            program.attach(frag);
-            program.link();
-        }
-        catch(std::exception& err) {
-            LOG_ERROR("Failed to load shaders: " << err.what());
-        }
-
-        std::vector<float> vertices = {
-            0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-            0.0f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-            0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f
+        std::unordered_map<glm::ivec3, world::Chunk> chunks = {
+            { glm::ivec3(0, 0, 0), world::Chunk(world::Block::Grass) },
+            { glm::ivec3(1, 0, 0), world::Chunk(world::Block::Grass) },
+            { glm::ivec3(2, 0, 0), world::Chunk(world::Block::Grass) }
         };
 
-        vbo.data(vertices);
-        std::size_t stride = 6 * sizeof(float);
-        vao.attribute(vbo, 0, 3, GL_FLOAT, stride); // Position attribute.
-        vao.attribute(vbo, 1, 3, GL_FLOAT, stride, 3 * sizeof(float)); // Colour attribute.
+        game_world.provide_chunks(std::move(chunks), renderer.world_renderer);
     }
 
-    std::optional<std::unique_ptr<State>> Game::update(gfx::Window& window, double delta) {
+    std::optional<std::unique_ptr<State>> Game::update(gfx::Window& window, float delta) {
+        if(window.is_key_down(GLFW_KEY_W)) camera.move_towards(util::Direction::Forward, delta);
+        if(window.is_key_down(GLFW_KEY_S)) camera.move_towards(util::Direction::Backward, delta);
+        if(window.is_key_down(GLFW_KEY_A)) camera.move_towards(util::Direction::Left, delta);
+        if(window.is_key_down(GLFW_KEY_D)) camera.move_towards(util::Direction::Right, delta);
+        if(window.is_key_down(GLFW_KEY_LEFT_SHIFT)) camera.move_towards(util::Direction::Up, delta);
+        if(window.is_key_down(GLFW_KEY_LEFT_CONTROL)) camera.move_towards(util::Direction::Down, delta);
+
         if(window.was_key_just_pressed(GLFW_KEY_F1)) {
             wireframe = !wireframe;
-            LOG((wireframe ? "Enabled" : "Disabled") << " wireframe drawing");
+            LOG((wireframe ? "Enabled" : "Disabled") << " wireframe rendering");
         }
 
-        float deltaf = static_cast<float>(delta);
-        if(window.is_key_down(GLFW_KEY_W)) camera.move_towards(util::Direction::Forward, deltaf);
-        if(window.is_key_down(GLFW_KEY_S)) camera.move_towards(util::Direction::Backward, deltaf);
-        if(window.is_key_down(GLFW_KEY_A)) camera.move_towards(util::Direction::Left, deltaf);
-        if(window.is_key_down(GLFW_KEY_D)) camera.move_towards(util::Direction::Right, deltaf);
-        if(window.is_key_down(GLFW_KEY_LEFT_SHIFT)) camera.move_towards(util::Direction::Up, deltaf);
-        if(window.is_key_down(GLFW_KEY_LEFT_CONTROL)) camera.move_towards(util::Direction::Down, deltaf);
-
         glm::vec2 mouse_movement = window.locked_cursor_movement();
-        camera.rotate(mouse_movement.x * deltaf, -mouse_movement.y * deltaf);
+        camera.rotate(mouse_movement.x * delta, -mouse_movement.y * delta);
 
         if(fps.update(delta)) {
             LOG("FPS: " << fps.get());
         }
 
+        renderer.update(camera);
+
         return {}; // Don't want to change state so return empty optional.
     }
 
     void Game::draw() const {
-        if(wireframe) { glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); }
-
-        // Draw game world...
-
-        program.use();
-        program.set_uniform("projection", camera.get_projection_matrix());
-        program.set_uniform("view", camera.get_view_matrix());
-
-        vao.bind();
-
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-
-        if(wireframe) { glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); }
-
-        // Draw text...
+        renderer.draw(wireframe);
     }
 }

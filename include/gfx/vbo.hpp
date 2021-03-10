@@ -8,7 +8,15 @@ namespace gfx {
     class VertexBuffer{
     public:
         VertexBuffer(GLenum type, bool dynamic);
+
+        VertexBuffer(VertexBuffer&&);
+        VertexBuffer& operator=(VertexBuffer&&);
+
+        VertexBuffer(const VertexBuffer&) = delete;
+        VertexBuffer& operator=(const VertexBuffer&) = delete;
+
         ~VertexBuffer();
+
         unsigned int operator*() const;
         void bind() const;
 
