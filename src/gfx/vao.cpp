@@ -4,7 +4,7 @@
 namespace gfx {
     VertexArray::VertexArray() {
         glGenVertexArrays(1, &id);
-        LOG("Generated VAO " << id);
+        LOG("Generated vertex array object " << id);
     }
 
     VertexArray::VertexArray(VertexArray&& other) : id(other.id) {
@@ -20,7 +20,7 @@ namespace gfx {
     VertexArray::~VertexArray() {
         if(id) {
             glDeleteVertexArrays(1, &id);
-            LOG("Deleted VAO " << id);
+            LOG("Deleted vertex array object " << id);
         }
     }
 

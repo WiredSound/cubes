@@ -4,6 +4,12 @@ project(cubes LANGUAGES CXX C)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+IF(NOT CMAKE_BUILD_TYPE)
+    SET(CMAKE_BUILD_TYPE Debug)
+ENDIF()
+
+message("Build type: ${CMAKE_BUILD_TYPE}")
+
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(TEST_DIR "${CMAKE_CURRENT_SOURCE_DIR}/test")
 set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
@@ -20,6 +26,10 @@ add_library(${SHARED_NAME} STATIC ${SRC_FILES})
 target_include_directories(${SHARED_NAME} PUBLIC ${INCLUDE_DIR})
 if(NOT MSVC)
     target_compile_options(${SHARED_NAME} PRIVATE -Wall -Wextra -Wpedantic)
+endif()
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+    message("Enabled trace logging and debug assertions")
+    target_compile_definitions(${SHARED_NAME} PRIVATE ENABLE_LOG_TRACE ENABLE_DEBUG_ASSERT)
 endif()
 
 set(GLFW_DIR "${LIB_DIR}/glfw")

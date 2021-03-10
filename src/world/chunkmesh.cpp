@@ -1,8 +1,8 @@
-#include <cassert>
 #include <utility>
 
-#include "world/chunkmesh.hpp"
 #include "util/log.hpp"
+#include "util/assert.hpp"
+#include "world/chunkmesh.hpp"
 
 namespace world {
     ChunkMeshBuilder::ChunkMeshBuilder(float face_size)
@@ -15,10 +15,9 @@ namespace world {
     }
 
     void ChunkMeshBuilder::build_face(glm::uvec3 bottom_left_pos, glm::uvec3 top_right_pos, const glm::vec3& colour) {
-        // TODO: Only run these assertions if debug or test build.
-        assert(top_right_pos.x >= bottom_left_pos.x);
-        assert(top_right_pos.y >= bottom_left_pos.y);
-        assert(top_right_pos.z >= bottom_left_pos.z);
+        DEBUG_ASSERT(top_right_pos.x >= bottom_left_pos.x);
+        DEBUG_ASSERT(top_right_pos.y >= bottom_left_pos.y);
+        DEBUG_ASSERT(top_right_pos.z >= bottom_left_pos.z);
 
         auto bottom_left_coords = static_cast<glm::vec3>(bottom_left_pos) * face_size;
         auto top_right_coords = static_cast<glm::vec3>(top_right_pos) * face_size;

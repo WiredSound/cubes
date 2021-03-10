@@ -4,7 +4,7 @@
 namespace gfx {
     VertexBuffer::VertexBuffer(GLenum type, bool dynamic) : type(type), dynamic(dynamic) {
         glGenBuffers(1, &id);
-        LOG("Generated VBO " << id);
+        LOG("Generated vertex buffer object " << id);
     }
 
     VertexBuffer::VertexBuffer(VertexBuffer&& other) : id(other.id), type(other.type), dynamic(other.dynamic) {
@@ -22,7 +22,7 @@ namespace gfx {
     VertexBuffer::~VertexBuffer() {
         if(id) {
             glDeleteBuffers(1, &id);
-            LOG("Deleted VBO " << id);
+            LOG("Deleted vertex buffer object " << id);
         }
     }
 
