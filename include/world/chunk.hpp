@@ -13,7 +13,7 @@
 
 namespace world {
     /// Width, depth, height of a single chunk.
-    constexpr unsigned int CHUNK_LENGTH = 32;
+    constexpr unsigned int CHUNK_LENGTH = 16;
     /// Number of blocks per chunk.
     constexpr unsigned int CHUNK_SIZE = CHUNK_LENGTH * CHUNK_LENGTH * CHUNK_LENGTH;
 
