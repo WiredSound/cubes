@@ -10,7 +10,12 @@ namespace gfx {
     class Shader {
     public:
         Shader(const std::string& path, ShaderType type);
+
+        Shader(const Shader&) = delete;
+        Shader& operator=(const Shader&) = delete;
+
         ~Shader();
+
         unsigned int operator*() const;
 
     private:
@@ -20,8 +25,14 @@ namespace gfx {
     class ShaderProgram {
     public:
         ShaderProgram();
+
+        ShaderProgram(const ShaderProgram&) = delete;
+        ShaderProgram& operator=(const Shader&) = delete;
+
         ~ShaderProgram();
+
         unsigned int operator*() const;
+
         void attach(const Shader& shader) const;
         void link() const;
         void use() const;
