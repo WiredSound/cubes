@@ -26,7 +26,13 @@ namespace render {
 
         /// Generate and store  a chunk mesh VAO for the given chunk at the specified chunk coordinates (will overwrite
         /// existing VAO at those coordinates if any).
-        void update_chunk_mesh(const glm::ivec3& coords, const world::Chunk& chunk);
+        void update_chunk_mesh(
+            const glm::ivec3& coords, const world::Chunk& chunk,
+            world::optional_chunk_ref above_chunk, world::optional_chunk_ref below_chunk,
+            world::optional_chunk_ref left_chunk, world::optional_chunk_ref right_chunk,
+            world::optional_chunk_ref front_chunk, world::optional_chunk_ref rear_chunk
+        );
+
         void remove_chunk_mesh(const glm::ivec3& coords);
 
         const float face_size;
