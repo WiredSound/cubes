@@ -21,7 +21,7 @@ namespace states {
         if(window.is_key_down(GLFW_KEY_S)) camera.move_towards(util::Direction::Backward, delta);
         if(window.is_key_down(GLFW_KEY_A)) camera.move_towards(util::Direction::Left, delta);
         if(window.is_key_down(GLFW_KEY_D)) camera.move_towards(util::Direction::Right, delta);
-        if(window.is_key_down(GLFW_KEY_LEFT_SHIFT)) camera.move_towards(util::Direction::Up, delta);
+        if(window.is_key_down(GLFW_KEY_SPACE)) camera.move_towards(util::Direction::Up, delta);
         if(window.is_key_down(GLFW_KEY_LEFT_CONTROL)) camera.move_towards(util::Direction::Down, delta);
 
         glm::vec2 mouse_movement = window.locked_cursor_movement();

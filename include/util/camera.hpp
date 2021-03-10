@@ -8,7 +8,7 @@ namespace util {
     class Camera {
     public:
         Camera(
-            float forward_backward_speed = 2.0f, float strafe_speed = 1.8f, float vertical_speed = 1.0f,
+            float forward_backward_speed = 8.0f, float strafe_speed = 7.75f, float vertical_speed = 9.0f,
             float look_speed = 1000.0f, bool lock_y = true, float fov = 90.0f, float near = 0.001f, float far = 1000.0f
         );
 
