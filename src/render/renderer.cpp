@@ -8,7 +8,7 @@ namespace render {
     }
 
     void Renderer::draw(bool wireframe) const {
-        if(wireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
         // Draw text...
 
