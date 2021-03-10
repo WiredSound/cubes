@@ -24,13 +24,13 @@ namespace states {
         if(window.is_key_down(GLFW_KEY_LEFT_SHIFT)) camera.move_towards(util::Direction::Up, delta);
         if(window.is_key_down(GLFW_KEY_LEFT_CONTROL)) camera.move_towards(util::Direction::Down, delta);
 
+        glm::vec2 mouse_movement = window.locked_cursor_movement();
+        camera.rotate(mouse_movement.x * delta, -mouse_movement.y * delta);
+
         if(window.was_key_just_pressed(GLFW_KEY_F1)) {
             wireframe = !wireframe;
             LOG((wireframe ? "Enabled" : "Disabled") << " wireframe rendering");
         }
-
-        glm::vec2 mouse_movement = window.locked_cursor_movement();
-        camera.rotate(mouse_movement.x * delta, -mouse_movement.y * delta);
 
         if(fps.update(delta)) {
             LOG("FPS: " << fps.get());

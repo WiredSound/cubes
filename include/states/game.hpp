@@ -18,6 +18,6 @@ namespace states {
         world::World game_world;
         util::FramesPerSecond fps;
         render::Renderer renderer;
-        bool wireframe;
+        bool wireframe = false;
     };
 }
