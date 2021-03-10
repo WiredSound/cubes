@@ -54,6 +54,7 @@ namespace render {
                 front_chunk, rear_chunk
             );
 
+            chunk_meshes.erase(coords);
             chunk_meshes.emplace(coords, std::move(mesh));
         }
     }
