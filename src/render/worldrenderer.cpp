@@ -1,3 +1,5 @@
+#include <glm/gtx/transform.hpp>
+
 #include "util/log.hpp"
 #include "render/worldrenderer.hpp"
 
@@ -16,17 +18,18 @@ namespace render {
         program.use();
         program.set_uniform("projection", camera.get_projection_matrix());
         program.set_uniform("view", camera.get_view_matrix());
-
-        // Update world vertex array...
     }
 
     void WorldRenderer::draw() const {
         program.use();
 
         for(auto& iter : chunk_meshes) {
+            auto chunk_coords = iter.first;
             auto& mesh = iter.second;
 
-            // TODO: Set model uniform based on chunk coordinates.
+            auto model_offset = static_cast<glm::vec3>(chunk_coords * static_cast<int>(world::CHUNK_LENGTH)) * face_size;
+            glm::mat4 model_matrix = glm::translate(glm::mat4(1.0f), model_offset);
+            program.set_uniform("model", model_matrix);
 
             mesh.bind_and_draw();
         }

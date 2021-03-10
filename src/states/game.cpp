@@ -7,11 +7,8 @@ namespace states {
     Game::Game(gfx::Window& window) : State("game", glm::vec3(0.46f, 0.74f, 0.85f)), fps(1.0) {
         window.toggle_cursor_lock();
 
-        world::Chunk test_chunk(world::Block::None);
-        for(auto pos : std::vector<glm::uvec3> { glm::uvec3(0, 0, 0), glm::uvec3(0, 0, 1), glm::uvec3(1, 0, 0) })
-            test_chunk.set_block(world::Block::Grass, pos);
-
-        game_world.provide_chunk(glm::ivec3(0, 0, 0), std::move(test_chunk), renderer.world_renderer);
+        game_world.provide_chunk(glm::ivec3(0, 0, 0), world::Chunk(world::Block::Grass), renderer.world_renderer);
+        game_world.provide_chunk(glm::ivec3(1, 0, 0), world::Chunk(world::Block::Grass), renderer.world_renderer);
     }
 
     std::optional<std::unique_ptr<State>> Game::update(gfx::Window& window, float delta) {
