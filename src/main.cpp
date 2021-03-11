@@ -17,7 +17,7 @@ int main() {
 
     try {
         glfw.init();
-        window.create(800, 600, "OpenGL Template C++", false);
+        window.create(800, 600, "Cubes", false);
         util::init_gl();
     }
     catch(std::exception& err) {
