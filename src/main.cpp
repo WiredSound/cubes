@@ -25,8 +25,16 @@ int main() {
         return -1;
     }
 
-    std::unique_ptr<states::State> current_state = std::make_unique<states::Game>(window);
+    std::unique_ptr<states::State> current_state;
     std::optional<std::unique_ptr<states::State>> possible_state_change;
+
+    try {
+        current_state = std::make_unique<states::Game>(window);
+    }
+    catch(std::exception& err) {
+        LOG_ERROR("Failed to enter initial game state due to error - " << err.what());
+        return -1;
+    }
 
     float loop_start_time = 0.0, delta = 0.0;
 

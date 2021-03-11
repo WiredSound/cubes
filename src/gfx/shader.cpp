@@ -12,10 +12,16 @@ namespace gfx {
     Shader::Shader(const std::string& path, ShaderType type) {
         std::ifstream file(path.c_str());
 
-        file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-
         std::stringstream buffer;
-        buffer << file.rdbuf();
+
+        try {
+            file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+            buffer << file.rdbuf();
+        }
+        catch(std::exception&) {
+            throw std::runtime_error("Shader source file '" + path + "' could not be read");
+        }
+
         auto shader = buffer.str();
 
         switch(type) {
@@ -34,8 +40,7 @@ namespace gfx {
             char info[512];
             glGetShaderInfoLog(id, 512, nullptr, info);
 
-            auto msg = std::string("Failed to compile shader from path '") +  path + std::string("' due to error: ") + info;
-            throw std::runtime_error(msg);
+            throw std::runtime_error("Shader '" +  path + "' could not be compiled due to error: " + info);
         }
 
         LOG("Compiled shader " << id);

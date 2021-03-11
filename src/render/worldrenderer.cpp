@@ -5,10 +5,10 @@
 
 namespace render {
     WorldRenderer::WorldRenderer(float face_size, bool greedy_meshing) : face_size(face_size), greedy_meshing(greedy_meshing) {
-        gfx::Shader vertex("shaders/world.vert", gfx::ShaderType::Vertex);
+        gfx::Shader vertex("assets/shaders/world.vert", gfx::ShaderType::Vertex);
         program.attach(vertex);
 
-        gfx::Shader fragment("shaders/world.frag", gfx::ShaderType::Fragment);
+        gfx::Shader fragment("assets/shaders/world.frag", gfx::ShaderType::Fragment);
         program.attach(fragment);
 
         program.link();
