@@ -12,7 +12,7 @@ namespace states {
         chunks.emplace(glm::ivec3(1, 0, 0), world::Chunk(world::Block::Grass));
         chunks.emplace(glm::ivec3(2, 0, 0), world::Chunk(world::Block::Grass));
 
-        game_world.provide_chunks(std::move(chunks), renderer.world_renderer);
+        game_world.provide_chunks(std::move(chunks), renderer);
     }
 
     std::optional<std::unique_ptr<State>> Game::update(gfx::Window& window, float delta) {
@@ -24,7 +24,7 @@ namespace states {
         if(window.is_key_down(GLFW_KEY_LEFT_CONTROL)) camera.move_towards(util::Direction::Down, delta);
 
         if(window.was_key_just_pressed(GLFW_KEY_Y))
-            game_world.provide_chunk(glm::ivec3(1, 0, 1), world::Chunk(world::Block::Grass), renderer.world_renderer);
+            game_world.provide_chunk(glm::ivec3(1, 0, 1), world::Chunk(world::Block::Grass), renderer);
 
         glm::vec2 mouse_movement = window.locked_cursor_movement();
         camera.rotate(mouse_movement.x * delta, -mouse_movement.y * delta);

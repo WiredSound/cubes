@@ -10,28 +10,33 @@ namespace world {
         else return std::make_optional(std::cref(search->second));
     }
 
-    void World::provide_chunk(glm::ivec3 coords, Chunk chunk, render::WorldRenderer& renderer) {
+    void World::provide_chunk(glm::ivec3 coords, Chunk chunk, render::Renderer& renderer) {
         store_chunk(coords, std::move(chunk));
 
         // Update the chunk mesh and the meshes of any present adjacent chunks:
 
-        update_chunk_mesh(coords, renderer);
-        update_adjacent_chunk_meshes(coords, renderer);
+        update_chunk_mesh(coords, renderer.world_renderer);
+        update_adjacent_chunk_meshes(coords, renderer.world_renderer);
+
+        // Update debug text:
+
+        // TODO: ...
     }
 
-    void World::provide_chunks(std::unordered_map<glm::ivec3, Chunk> coords_chunks, render::WorldRenderer& renderer) {
+    void World::provide_chunks(std::unordered_map<glm::ivec3, Chunk> coords_chunks, render::Renderer& renderer) {
         for(auto& coords_chunk : coords_chunks) {
             store_chunk(coords_chunk.first, std::move(coords_chunk.second));
         }
 
         // Update chunk meshes:
+
         for(auto& coords_chunk : coords_chunks) {
             auto& coords = coords_chunk.first;
 
-            update_chunk_mesh(coords, renderer);
+            update_chunk_mesh(coords, renderer.world_renderer);
 
             update_adjacent_chunk_meshes(
-                coords, renderer,
+                coords, renderer.world_renderer,
                 coords_chunks.find(util::coords_above(coords)) == coords_chunks.end(), // should update above chunk?
                 coords_chunks.find(util::coords_below(coords)) == coords_chunks.end(), // should update chunk below?
                 coords_chunks.find(util::coords_left(coords)) == coords_chunks.end(), // should update left chunk?
@@ -40,13 +45,23 @@ namespace world {
                 coords_chunks.find(util::coords_rear(coords)) == coords_chunks.end() // should update rear chunk?
             );
         }
+
+        // Update debug text:
+
+        // TODO: ...
     }
 
-    void World::remove_chunk(const glm::ivec3& coords, render::WorldRenderer& renderer) {
+    void World::remove_chunk(const glm::ivec3& coords, render::Renderer& renderer) {
         loaded_chunks.erase(coords);
 
-        renderer.remove_chunk_mesh(coords);
-        update_adjacent_chunk_meshes(coords, renderer);
+        // Update chunk meshes:
+
+        renderer.world_renderer.remove_chunk_mesh(coords);
+        update_adjacent_chunk_meshes(coords, renderer.world_renderer);
+
+        // Update debug text:
+
+        // TODO: ...
     }
 
     void World::store_chunk(glm::ivec3 coords, Chunk chunk) {
@@ -57,11 +72,11 @@ namespace world {
             << " loaded chunks)");
     }
 
-    void World::update_chunk_mesh(glm::ivec3 coords, render::WorldRenderer& renderer) {
+    void World::update_chunk_mesh(glm::ivec3 coords, render::WorldRenderer& world_renderer) {
         auto chunk = get_chunk(coords);
 
         if(chunk) {
-            renderer.update_chunk_mesh(
+            world_renderer.update_chunk_mesh(
                 coords, *chunk,
                 get_chunk(util::coords_above(coords)), get_chunk(util::coords_below(coords)),
                 get_chunk(util::coords_left(coords)), get_chunk(util::coords_right(coords)),
@@ -71,16 +86,16 @@ namespace world {
     }
 
     void World::update_adjacent_chunk_meshes(
-        const glm::ivec3& coords, render::WorldRenderer& renderer,
+        const glm::ivec3& coords, render::WorldRenderer& world_renderer,
         bool update_chunk_above, bool update_chunk_below,
         bool update_chunk_left, bool update_chunk_right,
         bool update_chunk_front, bool update_chunk_rear
     ) {
-        if(update_chunk_above) update_chunk_mesh(util::coords_above(coords), renderer);
-        if(update_chunk_below) update_chunk_mesh(util::coords_below(coords), renderer);
-        if(update_chunk_left) update_chunk_mesh(util::coords_left(coords), renderer);
-        if(update_chunk_right) update_chunk_mesh(util::coords_right(coords), renderer);
-        if(update_chunk_front) update_chunk_mesh(util::coords_front(coords), renderer);
-        if(update_chunk_rear) update_chunk_mesh(util::coords_rear(coords), renderer);
+        if(update_chunk_above) update_chunk_mesh(util::coords_above(coords), world_renderer);
+        if(update_chunk_below) update_chunk_mesh(util::coords_below(coords), world_renderer);
+        if(update_chunk_left) update_chunk_mesh(util::coords_left(coords), world_renderer);
+        if(update_chunk_right) update_chunk_mesh(util::coords_right(coords), world_renderer);
+        if(update_chunk_front) update_chunk_mesh(util::coords_front(coords), world_renderer);
+        if(update_chunk_rear) update_chunk_mesh(util::coords_rear(coords), world_renderer);
     }
 }
