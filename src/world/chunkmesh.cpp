@@ -6,24 +6,10 @@
 #include "world/chunkmesh.hpp"
 
 namespace world {
-    ChunkMesh::ChunkMesh(const std::vector<float>& vertices, const std::vector<unsigned int>& indices, unsigned int vertex_count)
-        : vertices_vbo(GL_ARRAY_BUFFER, false), indices_vbo(GL_ELEMENT_ARRAY_BUFFER, false),
-          vertex_count(vertex_count), indices_count(indices.size()) {
-        vao.bind();
+    ChunkMesh::ChunkMesh() : gfx::Mesh(6) {}
 
-        vertices_vbo.data(vertices);
-        indices_vbo.data(indices);
-
-        std::size_t stride = 6 * sizeof(float);
+    void ChunkMesh::prepare_attributes(std::size_t stride) {
         vao.attribute(vertices_vbo, 0, 3, GL_FLOAT, stride); // position
         vao.attribute(vertices_vbo, 1, 3, GL_FLOAT, stride, 3 * sizeof(float)); // colour
-
-        LOG("Created mesh containing " << vertex_count << " vertices (" << vertices.size() <<
-            " floating-point values) and " << indices_count << " indices");
-    }
-
-    void ChunkMesh::bind_and_draw() const {
-        vao.bind();
-        glDrawElements(GL_TRIANGLES, indices_count, GL_UNSIGNED_INT, 0);
     }
 }

@@ -1,11 +1,13 @@
 #pragma once
 
-#include <vector>
+#include "gfx/mesh.hpp"
 
 namespace text {
-    class TextMesh {
+    class TextMesh : public gfx::Mesh {
     public:
-        //TextMesh(const std::vector<float>& vertices, unsigned int vertex_count);
-        //void bind_and_draw();
+        TextMesh();
+
+    private:
+        void prepare_attributes(std::size_t stride) override;
     };
 }

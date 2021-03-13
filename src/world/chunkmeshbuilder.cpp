@@ -11,7 +11,9 @@ namespace world {
           front_face_colour_mod(0.0f), back_face_colour_mod(-0.025) {}
 
     ChunkMesh ChunkMeshBuilder::build() {
-        return ChunkMesh(vertices, indices, vertex_count);
+        ChunkMesh mesh;
+        mesh.create(vertices, indices);
+        return mesh;
     }
 
     void ChunkMeshBuilder::build_face(glm::uvec3 bottom_left_pos, glm::uvec3 top_right_pos, const glm::vec3& colour) {
