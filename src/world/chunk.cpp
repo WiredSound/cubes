@@ -1,7 +1,7 @@
 #include <algorithm>
 
 #include "world/chunk.hpp"
-#include "world/chunkmesh.hpp"
+#include "world/chunkmeshbuilder.hpp"
 
 namespace world {
     Chunk::Chunk(Block fill_block) {
@@ -20,7 +20,7 @@ namespace world {
         return get_block(pos) == Block::None;
     }
 
-    gfx::Mesh Chunk::build_simple_mesh(
+    ChunkMesh Chunk::build_simple_mesh(
         float face_size,
         optional_chunk_ref above_chunk, optional_chunk_ref below_chunk,
         optional_chunk_ref left_chunk, optional_chunk_ref right_chunk,
