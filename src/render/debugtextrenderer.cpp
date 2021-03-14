@@ -12,6 +12,10 @@ namespace render {
     }
 
     void DebugTextRenderer::draw() const {
-        // ...
+        // TODO
+    }
+
+    void DebugTextRenderer::update_text_mesh(text::DebugTextLine line, const std::string& msg) {
+        // TODO
     }
 }

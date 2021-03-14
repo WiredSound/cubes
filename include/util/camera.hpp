@@ -2,6 +2,9 @@
 
 #include <glm/glm.hpp>
 
+#include "text/debugtext.hpp"
+#include "render/debugtextrenderer.hpp"
+
 namespace util {
     enum class Direction : unsigned char { Forward, Backward, Left, Right, Up, Down };
 
@@ -15,7 +18,7 @@ namespace util {
         const glm::mat4& get_projection_matrix() const;
         glm::mat4 get_view_matrix() const;
 
-        void move_towards(Direction d, float delta);
+        void move_towards(Direction d, float delta, render::DebugTextRenderer& renderer, text::DebugText& debug_text);
         void rotate(float xchange, float ychange);
 
     private: 

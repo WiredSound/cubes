@@ -27,7 +27,7 @@ namespace util {
         );
     }
 
-    void Camera::move_towards(Direction d, float delta) {
+    void Camera::move_towards(Direction d, float delta, render::DebugTextRenderer& renderer, text::DebugText& debug_text) {
         float forward_backward_movement = forward_backward_speed * delta,
               strafe_movement = strafe_speed * delta,
               vertical_movement = vertical_speed * delta;
@@ -61,6 +61,8 @@ namespace util {
             if(lock_y) position.y = y;
             break;
         }
+
+        debug_text.update_camera_coords(position, renderer);
     }
 
     void Camera::rotate(float xchange, float ychange) {
