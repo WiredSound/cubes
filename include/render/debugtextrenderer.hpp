@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include <unordered_map>
 
 #include "gfx/shader.hpp"
@@ -16,9 +17,11 @@ namespace render {
         // `text::DebugText` is a friend so that only that class can update/remove text meshes.
         friend text::DebugText;
 
+        void update_text_mesh(text::DebugTextLine line, const std::string& msg);
+
         gfx::ShaderProgram program;
 
-        /// Map between text ID numbers and their coresponding meshes.
-        std::unordered_map<unsigned int, text::TextMesh> text_meshes;
+        /// Map between text lines and coresponding meshes.
+        std::unordered_map<text::DebugTextLine, text::TextMesh> text_meshes;
     };
 }
