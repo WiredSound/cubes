@@ -38,7 +38,9 @@ namespace states {
 
         if(window.was_key_just_pressed(GLFW_KEY_F1)) {
             wireframe = !wireframe;
+
             LOG((wireframe ? "Enabled" : "Disabled") << " wireframe rendering");
+            debug_text.update_polygon_mode(wireframe, renderer.debug_text_renderer);
         }
 
         if(fps.update(delta)) {
