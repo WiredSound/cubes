@@ -1,6 +1,7 @@
 #include <utility>
 
 #include "util/log.hpp"
+#include "util/coords.hpp"
 #include "util/assert.hpp"
 #include "world/chunkmeshbuilder.hpp"
 
@@ -60,7 +61,7 @@ namespace world {
 
             auto existing_index = search->second;
 
-            LOG_TRACE("Required vertex " << util::vec3_to_string(coords) << " found to already exist at index " << existing_index);
+            LOG_TRACE("Required vertex " << util::coords_to_string(coords) << " found to already exist at index " << existing_index);
 
             return existing_index;
         }
@@ -76,7 +77,7 @@ namespace world {
             auto index = vertex_count;
             vertex_count++;
 
-            LOG_TRACE("Created new vertex " << util::vec3_to_string(coords) << " at index " << index);
+            LOG_TRACE("Created new vertex " << util::coords_to_string(coords) << " at index " << index);
 
             // Store in past vertex+colour hash map:
             past_vertex_colour_to_index.emplace(vertex_colour, index);

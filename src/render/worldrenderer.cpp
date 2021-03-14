@@ -1,6 +1,7 @@
 #include <glm/gtx/transform.hpp>
 
 #include "util/log.hpp"
+#include "util/coords.hpp"
 #include "render/worldrenderer.hpp"
 
 namespace render {
@@ -41,7 +42,7 @@ namespace render {
         world::optional_chunk_ref left_chunk, world::optional_chunk_ref right_chunk,
         world::optional_chunk_ref front_chunk, world::optional_chunk_ref rear_chunk
     ) {
-        LOG("Generating mesh for chunk at " << util::vec3_to_string(coords));
+        LOG("Generating mesh for chunk at " << util::coords_to_string(coords));
 
         if(greedy_meshing) {
             // ...

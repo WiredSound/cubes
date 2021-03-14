@@ -1,4 +1,4 @@
-#include "util/log.hpp"
+#include "util/coords.hpp"
 #include "text/debugtext.hpp"
 #include "render/debugtextrenderer.hpp"
 
@@ -12,7 +12,7 @@ namespace text {
     }
 
     void DebugText::update_camera_coords(const glm::vec3& coords, render::DebugTextRenderer& renderer) const {
-        set_line(DebugTextLine::CameraCoordinates, "Position: " + util::vec3_to_string(coords), renderer);
+        set_line(DebugTextLine::CameraCoordinates, "Position: " + util::coords_to_string(coords), renderer);
     }
 
     void DebugText::update_chunks_loaded(std::size_t count, render::DebugTextRenderer& renderer) const {

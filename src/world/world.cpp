@@ -59,7 +59,7 @@ namespace world {
         loaded_chunks.erase(coords);
         loaded_chunks.emplace(coords, std::move(chunk));
 
-        LOG("Added chunk at " << util::vec3_to_string(coords) << " to game world (now " << loaded_chunks.size() + 1
+        LOG("Added chunk at " << util::coords_to_string(coords) << " to game world (now " << loaded_chunks.size() + 1
             << " loaded chunks)");
     }
 
