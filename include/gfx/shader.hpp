@@ -27,7 +27,7 @@ namespace gfx {
         ShaderProgram();
 
         ShaderProgram(const ShaderProgram&) = delete;
-        ShaderProgram& operator=(const Shader&) = delete;
+        ShaderProgram& operator=(const ShaderProgram&) = delete;
 
         ~ShaderProgram();
 

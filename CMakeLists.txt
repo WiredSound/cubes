@@ -32,6 +32,8 @@ if(CMAKE_BUILD_TYPE MATCHES Debug)
     target_compile_definitions(${SHARED_NAME} PRIVATE ENABLE_LOG_TRACE ENABLE_DEBUG_ASSERT)
 endif()
 
+target_include_directories(${SHARED_NAME} PUBLIC ${LIB_DIR})
+
 set(GLFW_DIR "${LIB_DIR}/glfw")
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)

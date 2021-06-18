@@ -4,6 +4,7 @@
 #include <unordered_map>
 
 #include "gfx/shader.hpp"
+#include "gfx/texture.hpp"
 #include "text/textmesh.hpp"
 #include "text/debugtext.hpp"
 
@@ -18,6 +19,8 @@ namespace render {
         friend text::DebugText;
 
         void update_text_mesh(text::DebugTextLine line, const std::string& msg);
+
+        gfx::Texture texture;
 
         gfx::ShaderProgram program;
 
