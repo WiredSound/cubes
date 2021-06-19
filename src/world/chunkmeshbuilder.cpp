@@ -7,14 +7,16 @@
 
 namespace world {
     ChunkMeshBuilder::ChunkMeshBuilder(float face_size)
-        : face_size(face_size), top_face_colour_mod(0.025f), bottom_face_colour_mod(-0.05),
+        : top_face_colour_mod(0.025f), bottom_face_colour_mod(-0.05),
           left_face_colour_mod(-0.025), right_face_colour_mod(0.0f),
-          front_face_colour_mod(0.0f), back_face_colour_mod(-0.025) {}
-
-    ChunkMesh ChunkMeshBuilder::build() {
-        ChunkMesh mesh;
-        mesh.create(vertices, indices);
-        return mesh;
+          front_face_colour_mod(0.0f), back_face_colour_mod(-0.025),
+          face_size(face_size) {}
+    
+    std::array<float, 6> ChunkMeshBuilder::vertex_to_data(const util::VertexColour& vertex) {
+        return {
+            vertex.vertex.x, vertex.vertex.y, vertex.vertex.z,
+            vertex.colour.x, vertex.colour.y, vertex.colour.z
+        };
     }
 
     void ChunkMeshBuilder::build_face(glm::uvec3 bottom_left_pos, glm::uvec3 top_right_pos, const glm::vec3& colour) {
@@ -40,50 +42,16 @@ namespace world {
             top_left_coords = top_right_coords - glm::vec3(0.0f, 0.0f, face_size);
         }
 
-        unsigned int bottom_left = require_vertex(bottom_left_coords, colour),
-                     bottom_right = require_vertex(bottom_right_coords, colour),
-                     top_left = require_vertex(top_left_coords, colour),
-                     top_right = require_vertex(top_right_coords, colour);
+        unsigned int bottom_left = require_vertex(util::VertexColour { bottom_left_coords, colour }),
+                     bottom_right = require_vertex(util::VertexColour { bottom_right_coords, colour }),
+                     top_left = require_vertex(util::VertexColour { top_left_coords, colour }),
+                     top_right = require_vertex(util::VertexColour { top_right_coords, colour });
 
         unsigned int new_indices[] = {
             top_right, bottom_right, top_left,
             bottom_right, bottom_left, top_left
         };
         indices.insert(indices.end(), new_indices, new_indices + 6);
-    }
-
-    unsigned int ChunkMeshBuilder::require_vertex(const glm::vec3& coords, const glm::vec3& colour) {
-        util::VertexColour vertex_colour { coords, colour };
-        auto search = past_vertex_colour_to_index.find(vertex_colour);
-
-        if(search != past_vertex_colour_to_index.end()) {
-            // Return index of existing vertex:
-
-            auto existing_index = search->second;
-
-            LOG_TRACE("Required vertex " << util::coords_to_string(coords) << " found to already exist at index " << existing_index);
-
-            return existing_index;
-        }
-        else {
-            // Create and store new vertex:
-
-            float new_vertices[] = {
-                coords.x, coords.y, coords.z,
-                colour.x, colour.y, colour.z
-            };
-            vertices.insert(vertices.end(), new_vertices, new_vertices + 6);
-
-            auto index = vertex_count;
-            vertex_count++;
-
-            LOG_TRACE("Created new vertex " << util::coords_to_string(coords) << " at index " << index);
-
-            // Store in past vertex+colour hash map:
-            past_vertex_colour_to_index.emplace(vertex_colour, index);
-
-            return index;
-        }
     }
 
     SimpleChunkMeshBuilder::SimpleChunkMeshBuilder(
