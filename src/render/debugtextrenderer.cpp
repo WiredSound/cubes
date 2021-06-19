@@ -13,7 +13,7 @@ namespace render {
 
     void DebugTextRenderer::draw() const {
         program.use();
-        glActiveTexture(GL_TEXTURE0);
+        program.set_uniform("tint", glm::vec3(1.0f, 0.3f, 0.3f));
         texture.bind();
 
         for(const auto& pair : text_meshes) {
@@ -22,14 +22,15 @@ namespace render {
     }
 
     void DebugTextRenderer::update_text_mesh(text::DebugTextLine line, const std::string& msg) {
+        text_meshes.erase(line);
         text_meshes[line] = text::TextMesh();
         std::vector<float> vertices = {
-            0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-            0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-            0.0f, 0.5f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-            0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f
+            0.5f, 0.5f, 1.0f, 1.0f,
+            0.5f, 0.0f, 1.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 0.5f, 0.0f, 1.0f
         };
-        std::vector<unsigned int> indices = {0, 1, 2, 1, 2, 3};
+        std::vector<unsigned int> indices = {0, 1, 3, 1, 2, 3};
         text_meshes[line].create(vertices, indices);
     }
 }

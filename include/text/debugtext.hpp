@@ -18,7 +18,7 @@ namespace text {
 
     class DebugText {
     public:
-        void update_fps(float fps, render::DebugTextRenderer& renderer) const ;
+        void update_fps(float fps, render::DebugTextRenderer& renderer) const;
         void update_polygon_mode(bool wireframe, render::DebugTextRenderer& renderer) const;
         void update_camera_coords(const glm::vec3& coords, render::DebugTextRenderer& renderer) const;
         void update_chunks_loaded(std::size_t count, render::DebugTextRenderer& renderer) const;
