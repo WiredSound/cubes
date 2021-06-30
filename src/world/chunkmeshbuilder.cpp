@@ -7,14 +7,14 @@
 
 namespace world {
     ChunkMeshBuilder::ChunkMeshBuilder(float face_size)
-        : top_face_colour_mod(0.025f), bottom_face_colour_mod(-0.05),
-          left_face_colour_mod(-0.025), right_face_colour_mod(0.0f),
-          front_face_colour_mod(0.0f), back_face_colour_mod(-0.025),
+        : top_face_colour_mod(0.025f), bottom_face_colour_mod(-0.05f),
+          left_face_colour_mod(-0.025f), right_face_colour_mod(0.0f),
+          front_face_colour_mod(0.0f), back_face_colour_mod(-0.025f),
           face_size(face_size) {}
     
-    std::array<float, 6> ChunkMeshBuilder::vertex_to_data(const util::VertexColour& vertex) {
+    std::array<float, 6> ChunkMeshBuilder::vertex_to_data(const util::Position3Colour3& vertex) {
         return {
-            vertex.vertex.x, vertex.vertex.y, vertex.vertex.z,
+            vertex.position.x, vertex.position.y, vertex.position.z,
             vertex.colour.x, vertex.colour.y, vertex.colour.z
         };
     }
@@ -42,10 +42,10 @@ namespace world {
             top_left_coords = top_right_coords - glm::vec3(0.0f, 0.0f, face_size);
         }
 
-        unsigned int bottom_left = require_vertex(util::VertexColour { bottom_left_coords, colour }),
-                     bottom_right = require_vertex(util::VertexColour { bottom_right_coords, colour }),
-                     top_left = require_vertex(util::VertexColour { top_left_coords, colour }),
-                     top_right = require_vertex(util::VertexColour { top_right_coords, colour });
+        unsigned int bottom_left = require_vertex(util::Position3Colour3 { bottom_left_coords, colour }),
+                     bottom_right = require_vertex(util::Position3Colour3 { bottom_right_coords, colour }),
+                     top_left = require_vertex(util::Position3Colour3 { top_left_coords, colour }),
+                     top_right = require_vertex(util::Position3Colour3 { top_right_coords, colour });
 
         unsigned int new_indices[] = {
             top_right, bottom_right, top_left,
@@ -84,6 +84,8 @@ namespace world {
     ) {
         Block block = chunk.get_block(pos);
         glm::vec3 colour = get_block_colour(block);
+
+        // TODO: Reduce repetition in the following code:
 
         if(block != Block::None) {
             // Left face:

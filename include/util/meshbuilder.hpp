@@ -3,6 +3,7 @@
 #include <array>
 
 #include "util/log.hpp"
+#include "util/coords.hpp"
 
 namespace util {
     template <typename Vertex, typename Mesh, unsigned int stride>
@@ -25,7 +26,7 @@ namespace util {
 
                 auto existing_index = search->second;
 
-                LOG_TRACE("Required vertex " << util::coords_to_string(coords) << " found to already exist at index " << existing_index);
+                LOG_TRACE("Required vertex " << util::coords_to_string(vertex.position) << " found to already exist at index " << existing_index);
 
                 return existing_index;
             }
@@ -38,7 +39,7 @@ namespace util {
                 auto index = vertex_count;
                 vertex_count++;
 
-                LOG_TRACE("Created new vertex " << util::coords_to_string(coords) << " at index " << index);
+                LOG_TRACE("Created new vertex " << util::coords_to_string(vertex.position) << " at index " << index);
 
                 past_vertex_to_index.emplace(vertex, index);
 

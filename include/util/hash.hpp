@@ -13,6 +13,16 @@ namespace util {
 // Implement hashing for vector types:
 namespace std {
     template <>
+    struct hash<glm::vec2> {
+        std::size_t operator()(const glm::vec2& v) const noexcept {
+            std::size_t seed = 0;
+            util::hash_combine(seed, hash<float>{}(v.x));
+            util::hash_combine(seed, hash<float>{}(v.y));
+            return seed;
+        }
+    };
+
+    template <>
     struct hash<glm::vec3> {
         std::size_t operator()(const glm::vec3& v) const noexcept {
             std::size_t seed = 0;

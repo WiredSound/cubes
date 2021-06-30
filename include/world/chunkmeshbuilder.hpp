@@ -7,16 +7,16 @@
 
 #include "world/chunk.hpp"
 #include "world/chunkmesh.hpp"
-#include "util/vertexcolour.hpp"
+#include "util/vertex.hpp"
 #include "util/meshbuilder.hpp"
 
 namespace world {
-    class ChunkMeshBuilder : public util::MeshBuilder<util::VertexColour, ChunkMesh, 6> {
+    class ChunkMeshBuilder : public util::MeshBuilder<util::Position3Colour3, ChunkMesh, 6> {
     public:
         ChunkMeshBuilder(float face_size);
 
     protected:
-        std::array<float, 6> vertex_to_data(const util::VertexColour& vertex) override;
+        std::array<float, 6> vertex_to_data(const util::Position3Colour3& vertex) override;
 
         void build_face(glm::uvec3 bottom_left_pos, glm::uvec3 top_right_pos, const glm::vec3& colour);
         
