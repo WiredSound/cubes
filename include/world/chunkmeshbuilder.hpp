@@ -16,6 +16,8 @@ namespace world {
         ChunkMeshBuilder(float face_size);
 
     protected:
+        std::string vertex_to_string(const util::Position3Colour3& vertex) override;
+
         std::array<float, 6> vertex_to_data(const util::Position3Colour3& vertex) override;
 
         void build_face(glm::uvec3 bottom_left_pos, glm::uvec3 top_right_pos, const glm::vec3& colour);

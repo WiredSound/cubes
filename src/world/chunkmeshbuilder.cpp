@@ -11,7 +11,11 @@ namespace world {
           left_face_colour_mod(-0.025f), right_face_colour_mod(0.0f),
           front_face_colour_mod(0.0f), back_face_colour_mod(-0.025f),
           face_size(face_size) {}
-    
+
+    std::string ChunkMeshBuilder::vertex_to_string(const util::Position3Colour3& vertex) {
+        return "pos: " + util::coords_to_string(vertex.position) + " col: " + util::coords_to_string(vertex.colour);
+    }
+
     std::array<float, 6> ChunkMeshBuilder::vertex_to_data(const util::Position3Colour3& vertex) {
         return {
             vertex.position.x, vertex.position.y, vertex.position.z,

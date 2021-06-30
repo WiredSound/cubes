@@ -6,6 +6,11 @@
 
 namespace util {
     template <typename T>
+    std::string coords_to_string(const glm::tvec2<T>& vec) {
+        return "(" + std::to_string(vec.x) + ", " + std::to_string(vec.y);
+    }
+
+    template <typename T>
     std::string coords_to_string(const glm::tvec3<T>& vec) {
         return "(" + std::to_string(vec.x) + ", " + std::to_string(vec.y) + ", " + std::to_string(vec.z) + ")";
     }
