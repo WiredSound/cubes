@@ -11,7 +11,7 @@ namespace gfx {
     public:
         Window();
         ~Window();
-        
+
         Window(const Window&) = delete;
         Window& operator=(const Window&) = delete;
 
@@ -26,8 +26,10 @@ namespace gfx {
         bool was_key_just_pressed(int key);
         void toggle_cursor_lock();
         /// Gets how the locked cursor moved since the last last call and will then reset the cursor's position. Will
-        //always return (0, 0) if the cursor is unlocked.
+        /// always return (0, 0) if the cursor is unlocked.
         glm::vec2 locked_cursor_movement();
+
+        int width, height;
 
     private:
         GLFWwindow* handle;

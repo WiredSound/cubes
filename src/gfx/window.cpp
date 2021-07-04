@@ -19,11 +19,17 @@ namespace gfx {
     }
 
     void Window::create(int width, int height, const char* title, bool vsync) {
+        this->width = width;
+        this->height = height;
+
         handle = glfwCreateWindow(width, height, title, nullptr, nullptr);
 
         if(handle == nullptr) {
             throw std::runtime_error("Failed to create GLFW window");
         }
+
+        // TODO: Width, height fields don't update with the resizing of the game window.
+        // Overall, the handling of the game window needs a lot of work (e.g. mouse controls don't work very well too).
 
         // Resize OpenGL viewport on window resize:
         glfwSetFramebufferSizeCallback(

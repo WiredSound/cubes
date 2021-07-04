@@ -15,6 +15,8 @@ namespace util {
     struct Position2Texel2 {
         glm::vec2 position;
         glm::vec2 texture_coords;
+
+        bool operator==(const Position2Texel2& other) const;
     };
 }
 

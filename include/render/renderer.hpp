@@ -7,6 +7,8 @@
 namespace render {
     class Renderer {
     public:
+        Renderer(int window_width, int window_height);
+
         void update(const util::Camera& camera);
         void draw(bool wireframe) const;
 

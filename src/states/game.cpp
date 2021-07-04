@@ -4,7 +4,7 @@
 #include "util/log.hpp"
 
 namespace states {
-    Game::Game(gfx::Window& window) : State("game", glm::vec3(0.46f, 0.74f, 0.85f)), fps(1.0) {
+    Game::Game(gfx::Window& window) : State("game", glm::vec3(0.46f, 0.74f, 0.85f)), fps(1.0), renderer(window.width, window.height) {
         window.toggle_cursor_lock();
 
         std::unordered_map<glm::ivec3, world::Chunk> chunks;

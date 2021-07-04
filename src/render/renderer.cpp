@@ -3,6 +3,8 @@
 #include "render/renderer.hpp"
 
 namespace render {
+    Renderer::Renderer(int window_width, int window_height) : debug_text_renderer(window_width, window_height) {}
+
     void Renderer::update(const util::Camera& camera) {
         world_renderer.update(camera);
     }

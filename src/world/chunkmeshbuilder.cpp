@@ -51,11 +51,11 @@ namespace world {
                      top_left = require_vertex(util::Position3Colour3 { top_left_coords, colour }),
                      top_right = require_vertex(util::Position3Colour3 { top_right_coords, colour });
 
-        unsigned int new_indices[] = {
+        unsigned int new_vertices[] = {
             top_right, bottom_right, top_left,
             bottom_right, bottom_left, top_left
         };
-        indices.insert(indices.end(), new_indices, new_indices + 6);
+        add_indices(new_vertices);
     }
 
     SimpleChunkMeshBuilder::SimpleChunkMeshBuilder(

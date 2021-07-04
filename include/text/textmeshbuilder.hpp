@@ -7,7 +7,11 @@
 namespace text {
     class TextMeshBuilder : public util::MeshBuilder<util::Position2Texel2, TextMesh, 4> {
     public:
-        TextMeshBuilder(const std::string& text);
+        TextMeshBuilder(
+            const std::string& text, int window_width, int window_height, unsigned int image_width_pixels,
+            unsigned int image_height_pixels, unsigned int char_width_pixels, unsigned int char_height_pixels,
+            unsigned int chars_per_row, float draw_scale_factor
+        );
 
     protected:
         std::string vertex_to_string(const util::Position2Texel2& vertex) override;

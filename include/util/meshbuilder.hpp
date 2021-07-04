@@ -46,16 +46,22 @@ namespace util {
             }
         }
 
+        /// Adds a set of indices to the mesh that will be built.
+        template <std::size_t n>
+        void add_indices(unsigned int (&new_indices)[n]) {
+            indices.insert(indices.end(), new_indices, new_indices + n);
+        }
+
         virtual std::string vertex_to_string(const Vertex& vertex) = 0;
 
         virtual std::array<float, stride> vertex_to_data(const Vertex& vertex) = 0;
 
-        std::vector<unsigned int> indices;
 
     private:
         unsigned int vertex_count = 0;
 
         std::vector<float> vertices;
+        std::vector<unsigned int> indices;
 
         std::unordered_map<Vertex, unsigned int> past_vertex_to_index;
     };
