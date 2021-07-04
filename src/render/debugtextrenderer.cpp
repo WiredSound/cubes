@@ -1,4 +1,5 @@
 #include "render/debugtextrenderer.hpp"
+#include "text/textmeshbuilder.hpp"
 
 namespace render {
     DebugTextRenderer::DebugTextRenderer() : texture("assets/font.png") {
@@ -23,14 +24,6 @@ namespace render {
 
     void DebugTextRenderer::update_text_mesh(text::DebugTextLine line, const std::string& msg) {
         text_meshes.erase(line);
-        text_meshes[line] = text::TextMesh();
-        std::vector<float> vertices = {
-            0.5f, 0.5f, 1.0f, 1.0f,
-            0.5f, 0.0f, 1.0f, 0.0f,
-            0.0f, 0.0f, 0.0f, 0.0f,
-            0.0f, 0.5f, 0.0f, 1.0f
-        };
-        std::vector<unsigned int> indices = {0, 1, 3, 1, 2, 3};
-        text_meshes[line].create(vertices, indices);
+        text_meshes[line] = text::TextMeshBuilder(msg).build();
     }
 }

@@ -6,6 +6,9 @@
 
 namespace text {
     class TextMeshBuilder : public util::MeshBuilder<util::Position2Texel2, TextMesh, 4> {
+    public:
+        TextMeshBuilder(const std::string& text);
+
     protected:
         std::string vertex_to_string(const util::Position2Texel2& vertex) override;
 

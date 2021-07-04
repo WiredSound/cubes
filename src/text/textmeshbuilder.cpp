@@ -2,6 +2,10 @@
 #include "util/coords.hpp"
 
 namespace text {
+    TextMeshBuilder::TextMeshBuilder(const std::string& text) {
+
+    }
+
     std::string TextMeshBuilder::vertex_to_string(const util::Position2Texel2& vertex) {
         return "pos: " + util::coords_to_string(vertex.position) + " texel: " + util::coords_to_string(vertex.texture_coords);
     }
