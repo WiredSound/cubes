@@ -44,8 +44,9 @@ namespace states {
         }
 
         if(fps.update(delta)) {
-            LOG_TRACE("FPS: " << fps.get());
-            debug_text.update_fps(delta, renderer.debug_text_renderer);
+            auto current_fps = fps.get();
+            LOG_TRACE("FPS: " << current_fps);
+            debug_text.update_fps(current_fps, renderer.debug_text_renderer);
         }
 
         renderer.update(camera);

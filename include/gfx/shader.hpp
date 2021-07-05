@@ -37,6 +37,7 @@ namespace gfx {
         void link() const;
         void use() const;
 
+        void set_uniform(const std::string& key, const glm::vec2& value) const;
         void set_uniform(const std::string& key, const glm::vec3& value) const;
         void set_uniform(const std::string& key, const glm::mat4& value) const;
 
