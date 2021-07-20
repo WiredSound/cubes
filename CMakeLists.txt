@@ -53,6 +53,11 @@ target_link_libraries(${SHARED_NAME} "glad" ${CMAKE_DL_LIBS})
 set(GLM_DIR "${LIB_DIR}/glm")
 target_include_directories(${SHARED_NAME} PUBLIC ${GLM_DIR})
 
+set(NOISE_DIR "${LIB_DIR}/FastNoise2")
+set(FASTNOISE2_NOISETOOL OFF CACHE BOOL "Build noise tool" FORCE)
+add_subdirectory(${NOISE_DIR})
+target_link_libraries(${SHARED_NAME} "FastNoise")
+
 add_executable(${EXE_NAME} ${SRC_DIR}/main.cpp)
 target_link_libraries(${EXE_NAME} PRIVATE ${SHARED_NAME})
 
