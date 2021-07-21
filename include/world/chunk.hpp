@@ -17,6 +17,9 @@ namespace world {
     /// Number of blocks per chunk.
     constexpr unsigned int CHUNK_SIZE = CHUNK_LENGTH * CHUNK_LENGTH * CHUNK_LENGTH;
 
+    glm::ivec3 world_position_to_chunk_position(const glm::ivec3& world_pos);
+    glm::ivec3 chunk_position_to_world_position(const glm::ivec3& chunk_pos);
+
     class Chunk;
     using optional_chunk_ref = std::optional<std::reference_wrapper<const Chunk>>;
 

@@ -12,25 +12,25 @@ namespace states {
         chunks.emplace(glm::ivec3(1, 0, 0), world::Chunk(world::Block::Grass));
         chunks.emplace(glm::ivec3(2, 0, 0), world::Chunk(world::Block::Grass));
 
-        game_world.provide_chunks(std::move(chunks), renderer, debug_text);
+        //game_world.provide_chunks(std::move(chunks), renderer, debug_text);
     }
 
     std::optional<std::unique_ptr<State>> Game::update(gfx::Window& window, float delta) {
         if(window.is_key_down(GLFW_KEY_W))
-            camera.move_towards(util::Direction::Forward, delta, renderer.debug_text_renderer, debug_text);
+            camera.move_towards(util::Direction::Forward, delta, renderer, debug_text, game_world);
         if(window.is_key_down(GLFW_KEY_S))
-            camera.move_towards(util::Direction::Backward, delta, renderer.debug_text_renderer, debug_text);
+            camera.move_towards(util::Direction::Backward, delta, renderer, debug_text, game_world);
         if(window.is_key_down(GLFW_KEY_A))
-            camera.move_towards(util::Direction::Left, delta, renderer.debug_text_renderer, debug_text);
+            camera.move_towards(util::Direction::Left, delta, renderer, debug_text, game_world);
         if(window.is_key_down(GLFW_KEY_D))
-            camera.move_towards(util::Direction::Right, delta, renderer.debug_text_renderer, debug_text);
+            camera.move_towards(util::Direction::Right, delta, renderer, debug_text, game_world);
         if(window.is_key_down(GLFW_KEY_SPACE))
-            camera.move_towards(util::Direction::Up, delta, renderer.debug_text_renderer, debug_text);
+            camera.move_towards(util::Direction::Up, delta, renderer, debug_text, game_world);
         if(window.is_key_down(GLFW_KEY_LEFT_CONTROL))
-            camera.move_towards(util::Direction::Down, delta, renderer.debug_text_renderer, debug_text);
+            camera.move_towards(util::Direction::Down, delta, renderer, debug_text, game_world);
 
         if(window.was_key_just_pressed(GLFW_KEY_Y)) {
-            game_world.provide_chunk(glm::ivec3(1, 0, 1), world::Chunk(world::Block::Grass), renderer, debug_text);
+            //game_world.provide_chunk(glm::ivec3(1, 0, 1), world::Chunk(world::Block::Grass), renderer, debug_text);
         }
 
         glm::vec2 mouse_movement = window.locked_cursor_movement();

@@ -4,6 +4,16 @@
 #include "world/chunkmeshbuilder.hpp"
 
 namespace world {
+    glm::ivec3 world_position_to_chunk_position(const glm::ivec3& world_pos) {
+        // TODO
+        return world_pos / glm::ivec3(CHUNK_LENGTH);
+    }
+
+    glm::ivec3 chunk_position_to_world_position(const glm::ivec3& chunk_pos) {
+        // TODO
+        return chunk_pos * glm::ivec3(CHUNK_LENGTH);
+    }
+
     Chunk::Chunk(Block fill_block) {
         blocks.fill(fill_block);
     }

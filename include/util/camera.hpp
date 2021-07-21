@@ -3,7 +3,9 @@
 #include <glm/glm.hpp>
 
 #include "text/debugtext.hpp"
-#include "render/debugtextrenderer.hpp"
+
+namespace world { class World; }
+namespace render { class Renderer; }
 
 namespace util {
     enum class Direction : unsigned char { Forward, Backward, Left, Right, Up, Down };
@@ -18,10 +20,10 @@ namespace util {
         const glm::mat4& get_projection_matrix() const;
         glm::mat4 get_view_matrix() const;
 
-        void move_towards(Direction d, float delta, render::DebugTextRenderer& renderer, text::DebugText& debug_text);
+        void move_towards(Direction d, float delta, render::Renderer& renderer, text::DebugText& debug_text, world::World& world);
         void rotate(float xchange, float ychange);
 
-    private: 
+    private:
         void update_vectors();
 
         const float forward_backward_speed, strafe_speed, vertical_speed, look_speed;

@@ -3,6 +3,8 @@
 #include <algorithm>
 
 #include "util/camera.hpp"
+#include "world/world.hpp"
+#include "render/renderer.hpp"
 
 namespace util {
     Camera::Camera(
@@ -27,7 +29,7 @@ namespace util {
         );
     }
 
-    void Camera::move_towards(Direction d, float delta, render::DebugTextRenderer& renderer, text::DebugText& debug_text) {
+    void Camera::move_towards(Direction d, float delta, render::Renderer& renderer, text::DebugText& debug_text, world::World& world) {
         float forward_backward_movement = forward_backward_speed * delta,
               strafe_movement = strafe_speed * delta,
               vertical_movement = vertical_speed * delta;
@@ -62,7 +64,9 @@ namespace util {
             break;
         }
 
-        debug_text.update_camera_coords(position, renderer);
+        debug_text.update_camera_coords(position, renderer.debug_text_renderer);
+
+        world.camera_moved(position, renderer, debug_text);
     }
 
     void Camera::rotate(float xchange, float ychange) {

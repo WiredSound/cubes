@@ -34,6 +34,16 @@ namespace std {
     };
 
     template <>
+    struct hash<glm::ivec2> {
+        std::size_t operator()(const glm::ivec2& v) const noexcept {
+            std::size_t seed = 0;
+            util::hash_combine(seed, hash<int>{}(v.x));
+            util::hash_combine(seed, hash<int>{}(v.y));
+            return seed;
+        }
+    };
+
+    template <>
     struct hash<glm::ivec3> {
         std::size_t operator()(const glm::ivec3& v) const noexcept {
             std::size_t seed = 0;

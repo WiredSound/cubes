@@ -11,7 +11,7 @@ namespace gfx {
     void Mesh::create(const std::vector<float>& vertices, const std::vector<unsigned int>& indices) {
         vertices_count = vertices.size() / values_per_vertex;
         indices_count = indices.size();
-        
+
         vao.bind();
 
         vertices_vbo.data(vertices);
@@ -20,10 +20,10 @@ namespace gfx {
         std::size_t stride = values_per_vertex * sizeof(float);
         prepare_attributes(stride);
 
-        LOG("Created mesh containing " << vertices_count << " vertices (" << vertices.size() <<
+        LOG_TRACE("Created mesh containing " << vertices_count << " vertices (" << vertices.size() <<
             " floating-point values) and " << indices_count << " indices");
     }
-    
+
     void Mesh::bind_and_draw() const {
         vao.bind();
         glDrawElements(GL_TRIANGLES, indices_count, GL_UNSIGNED_INT, 0);
